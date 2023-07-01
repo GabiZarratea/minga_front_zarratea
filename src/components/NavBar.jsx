@@ -5,7 +5,7 @@ export default function NavBar() {
   const [display, setDisplay] = useState(false)
   return (
     <nav className="w-full text-white absolute flex flex-col items-center justify-around">
-            <div className="flex w-[90%] justify-between p-6">
+            <div className="flex w-[90%] justify-between items-center p-6">
             <img src="/Menu.svg" onClick={() => setDisplay(!display)}/>
             {
               display && (<div className='drawer sm:flex text-center sm:text-start min-w-[100%] sm:min-w-[410px] h-[100vh] flex-col sm:items-start gap-[147px] p-6 bg-gradient-to-b from-orange-600 to-orange-500 fixed top-0 left-0 shadow-2xl'>
@@ -31,7 +31,8 @@ export default function NavBar() {
                 </div>
               </div>)
             }
-            <img src="/logoDos.png" className="w-[193px] h-[65px] shrink-0"/>
+            <img src="/logoDos.png" className="hidden md:block w-[193px] h-[65px] shrink-0"/>
+            <img src="/logoMovile.png" className="md:hidden w-[35px] h-[35px] shrink-0"/>
             </div>
     </nav>
   )
