@@ -10,7 +10,7 @@ export default function Footer() {
       <img src="/youtube-black.svg" alt="Youtube Social" className="w-[35px]" />
     </div>
     <div className="hidden lg:flex flex-col w-full items-center justify-between">
-      <img src="/footer.png" className="h-[200px] w-full rounded-b-[50%]" />
+      <img src="/footer.png" className="h-[200px] w-full rounded-b-[50%] m-10" />
       <div className="flex flex-row justify-around items-center w-full p-5">
         <div className="flex flex-row gap-10 font-medium text-lg">
         <p>Home</p>
