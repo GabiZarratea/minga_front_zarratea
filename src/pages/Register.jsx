@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { api, apiUrl, endpoints } from "../utils/api.js";
+import { Link as Anchor } from "react-router-dom";
 
 
 export default function Register() {
@@ -37,25 +38,25 @@ export default function Register() {
               <div className="w-full mt-8 mr-0 mb-0 ml-0 space-y-8 flex flex-col items-center">
                 <div>
                   <p className="bg-white pt-0 pr-2 pb-0 pl-2 mr-0 mb-0 ml-2 not-italic font-normal leading-[normal] tracking-[0.6px] text-xs text-[color:var(--primary-two-design,#F97316)]">Email</p>
-                  <input placeholder="DragonballZ@Krowl.com" id="email" name="email" type="email" required className="border placeholder-gray-300 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                  <input ref={email} placeholder="DragonballZ@Krowl.com" id="email" name="email" type="email" required className="border placeholder-gray-300 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                       rounded-[10px] border-solid border-[rgba(31,31,31,0.50)] w-[70vw] md:w-[30vw] h-12 shrink-0"/>
                 </div>
                 <div>
                   <p className="bg-white pt-0 pr-2 pb-0 pl-2 mr-0 mb-0 ml-2 not-italic font-normal leading-[normal] tracking-[0.6px] text-xs text-[color:var(--primary-two-design,#F97316)]">Photo</p>
-                  <input placeholder="Url" id="photo" name="photo" type="text" required className="border placeholder-gray-300 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                  <input ref={photo} placeholder="Url" id="photo" name="photo" type="text" required className="border placeholder-gray-300 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                       rounded-[10px] border-solid border-[rgba(31,31,31,0.50)] w-[70vw] md:w-[30vw] h-12 shrink-0"/>
                 </div>
                 <div>
                   <p className="bg-white pt-0 pr-2 pb-0 pl-2 mr-0 mb-0 ml-2 not-italic font-normal leading-[normal] tracking-[0.6px] text-xs text-[color:var(--primary-two-design,#F97316)]">Password</p>
-                  <input placeholder="Password" id="photo" name="photo" type="text" required className="border placeholder-gray-300 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                  <input ref={password} placeholder="Password" id="password" name="password" type="text" required className="border placeholder-gray-300 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                       rounded-[10px] border-solid border-[rgba(31,31,31,0.50)] w-[70vw] md:w-[30vw] h-12 shrink-0"/>
                 </div>
-                <div class="flex items-center justify-start w-[70vw] md:w-[30vw]">
-                  <input type="checkbox" class="border rounded-[10px] border-solid border-[#1F1F1F]" />
-                  <label class="text-[#1F1F1F] text-xs ms-2 not-italic font-normal leading-[normal] tracking-[0.6px]">Send notification to my email</label>
+                <div className="flex items-center justify-start w-[70vw] md:w-[30vw]">
+                  <input type="checkbox" className="border rounded-[10px] border-solid border-[#1F1F1F]" />
+                  <label className="text-[#1F1F1F] text-xs ms-2 not-italic font-normal leading-[normal] tracking-[0.6px]">Send notification to my email</label>
                 </div>
                 <div className="flex w-[70vw] md:w-[30vw] h-12 flex-col justify-center shrink-0 bg-[color:var(--primary-two-design,#F97316)] rounded-[10px]">
-                  <a className="text-[#FAFCFC] text-center text-sm not-italic font-bold leading-[normal] tracking-[0.7px]">Sign Up</a>
+                  <Anchor onClick={handleFormSubmit} className="text-[#FAFCFC] text-center text-sm not-italic font-bold leading-[normal] tracking-[0.7px]">Sign Up</Anchor>
                 </div>
                 <div className="w-[70vw] md:w-[30vw] h-12 shrink-0 border rounded-[10px] border-solid border-[#1F1F1F] flex justify-center items-center">
                   <img src="/google.png" className="w-6 h-6 shrink-0" />
@@ -66,9 +67,7 @@ export default function Register() {
               </div>
             </form>
           </div>
-          <div className="hidden md:flex md:w-1/2 xl:w-2/3 2xl:w-3/4 h-full bg-cover bg-[url('/fondoForm.png')]">
-
-          </div>
+          <div className="hidden md:flex md:w-1/2 xl:w-2/3 2xl:w-3/4 h-full bg-cover bg-[url('/fondoForm.png')]"></div>
         </div>
       </>
     );
