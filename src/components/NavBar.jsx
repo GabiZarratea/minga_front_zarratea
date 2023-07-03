@@ -1,5 +1,5 @@
 import React, {useState}  from 'react'
-import Button from './Button'
+import {Link as Anchor} from 'react-router-dom'
 
 export default function NavBar() {
   const [display, setDisplay] = useState(false)
@@ -21,12 +21,13 @@ export default function NavBar() {
                     </div>
                     <img src="/filled.png" onClick={() => setDisplay(!display)} className='hidden sm:block ms-[20%] w-[24px] h-[24px]'/>
                   </div>
-                  <div className='lg:text-lg'>
-                    <p className='p-3 bg-white text-orange-600 w-[250px] sm:w-[400px] rounded-md'>Home</p>
-                    <p className='p-3'>Comics</p>
-                    <p className='p-3'>My Comics</p>
-                    <p className='p-3'>Favorites</p> 
-                    <p className='p-3'>Logout</p> 
+                  <div className='lg:text-lg flex flex-col'>
+                  <Anchor to={'/'} className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> Home </Anchor>
+                  <Anchor to={'/register'} className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> Register </Anchor>
+                  <Anchor className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> Comics </Anchor>
+                  <Anchor className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> My Comics </Anchor >
+                  <Anchor className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> Favorites </Anchor>
+                  <Anchor className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> Log Out </Anchor>
                   </div>
                 </div>
               </div>)
