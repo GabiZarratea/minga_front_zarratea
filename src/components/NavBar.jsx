@@ -32,7 +32,8 @@ export default function NavBar() {
                 </div>
               </div>)
             }
-            <img src="/logoDos.png" className="w-[193px] h-[65px] shrink-0"/>
+            <img src="/logoDos.png" className="hidden md:block w-[193px] h-[65px] shrink-0"/>
+            <img src="/logoMovile.png" className="md:hidden w-[35px] h-[35px] shrink-0"/>
             </div>
         </div>
     </nav>
