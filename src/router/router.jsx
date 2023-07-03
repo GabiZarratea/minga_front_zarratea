@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Register from '../pages/Register'
 import Main from "../layouts/Main";
-import Signin from "../pages/signin";
+import SignIn from "../pages/signin";
 import Index from "../pages/Index";
 import Welcome from "../pages/NotAllow"
 import ProtectedRoute from "./ProtectedRoute"
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
     },
     {
         path:'/signin',
-        element: <Signin/>
+        element: <SignIn/>
     },
     {
         path:'/NotAllow',
