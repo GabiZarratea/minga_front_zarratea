@@ -1,12 +1,11 @@
 import React, {useState}  from 'react'
-import Button from './Button'
+import {Link as Anchor} from 'react-router-dom'
 
 export default function NavBar() {
   const [display, setDisplay] = useState(false)
   return (
-    <nav className="w-full h-[10vh] lg:h-[auto] text-white">
-      <div className="flex flex-col items-center justify-around">
-            <div className="flex w-[90%] justify-between p-6">
+    <nav className="w-full text-white absolute flex flex-col items-center justify-around">
+            <div className="flex w-[90%] justify-between items-center p-6">
             <img src="/Menu.svg" onClick={() => setDisplay(!display)}/>
             {
               display && (<div className='drawer sm:flex text-center sm:text-start min-w-[100%] sm:min-w-[410px] h-[100vh] flex-col sm:items-start gap-[147px] p-6 bg-gradient-to-b from-orange-600 to-orange-500 fixed top-0 left-0 shadow-2xl'>
@@ -22,19 +21,20 @@ export default function NavBar() {
                     </div>
                     <img src="/filled.png" onClick={() => setDisplay(!display)} className='hidden sm:block ms-[20%] w-[24px] h-[24px]'/>
                   </div>
-                  <div className='lg:text-lg'>
-                    <p className='p-3 bg-white text-orange-600 w-[250px] sm:w-[400px] rounded-md'>Home</p>
-                    <p className='p-3'>Comics</p>
-                    <p className='p-3'>My Comics</p>
-                    <p className='p-3'>Favorites</p> 
-                    <p className='p-3'>Logout</p> 
+                  <div className='lg:text-lg flex flex-col'>
+                  <Anchor to={'/'} className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> Home </Anchor>
+                  <Anchor to={'/register'} className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> Register </Anchor>
+                  <Anchor className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> Comics </Anchor>
+                  <Anchor className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> My Comics </Anchor >
+                  <Anchor className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> Favorites </Anchor>
+                  <Anchor className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> Log Out </Anchor>
                   </div>
                 </div>
               </div>)
             }
-            <img src="/logoDos.png" className="w-[193px] h-[65px] shrink-0"/>
+            <img src="/logoDos.png" className="hidden md:block w-[193px] h-[65px] shrink-0"/>
+            <img src="/logoMovile.png" className="md:hidden w-[35px] h-[35px] shrink-0"/>
             </div>
-        </div>
     </nav>
   )
 }

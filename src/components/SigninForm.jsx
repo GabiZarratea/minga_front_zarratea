@@ -1,23 +1,58 @@
 import React from 'react'
 import ButtonOrange from '../components/ButtonOrange'
 
+import { useRef, useState } from 'react'
+import { api, apiUrl, endpoints } from '../utils/api'
+
 export default function SigninForm() {
+    let [user, setUser] = useState({})
+    let inputEmail = useRef("")
+    let inputPassword = useRef("")
+
+    async function handleFormSubmit(event){
+        event.preventDefault()
+        let datos = {
+            email: inputEmail.current.value,
+            password: inputPassword.current.value
+        }
+        console.log(datos)
+        try {
+            let { data } = await api.post(apiUrl + endpoints.sign_in, datos)
+            await setUser(data.user)
+            console.log(user)
+        }
+        catch (error) {
+            console.log(error.message)
+        }
+    }
   return (
     <div className='flex flex-wrap flex-col justify-center items-center w-[100%] lg:w-[50%]'>
         <img className='hidden lg:flex' src="/logoDos.png" alt="" />
         <h2 className='text-center text-[60px] flex-wrap font-bold'>Welcome <span className='text-orange-600'>back!</span></h2>
         <p className='text-center text-[20px] flex-wrap font-bold'>Discover manga, manhua and manhwa, track your progress, have fun, read manga.</p>
-        <form className='flex flex-col justify-center items-center gap-[30px] m-[50px_10px]' action="">
-            <label htmlFor="Email">Email</label>
-            <input className='border-orange-600 border-4' type="email" name="Email" id="Email" />
-            <label htmlFor="Password">Password</label>
-            <input className='border-orange-600 border-4' type="password" name="Password" id="Password" />
-            <ButtonOrange title="Sign In" href="" />
-            <ButtonOrange title="Sign In with Google" href="" />
-        </form>
-        <p className='text-[20px] font-bold'>you don't have an account yet? <a className='text-orange-600' href="">Sign up</a></p>
-        <p className='text-[20px] font-bold'>Go back to <a className='text-orange-600' href="">home page</a></p>
-        
+        <form onSubmit={handleFormSubmit} method="POST" className="w-full">
+              <div className="w-full mt-8 mr-0 mb-0 ml-0 space-y-8 flex flex-col items-center">
+                <div>
+                  <p className="bg-white pt-0 pr-2 pb-0 pl-2 mr-0 mb-0 ml-2 not-italic font-normal leading-[normal] tracking-[0.6px] text-xs text-[color:var(--primary-two-design,#F97316)]">Email</p>
+                  <input placeholder="DragonballZ@Krowl.com" id="email" name="email" type="email" required className="border placeholder-gray-300 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                      rounded-[10px] border-solid border-[rgba(31,31,31,0.50)] w-[70vw] md:w-[30vw] h-12 shrink-0"/>
+                </div>
+                <div>
+                  <p className="bg-white pt-0 pr-2 pb-0 pl-2 mr-0 mb-0 ml-2 not-italic font-normal leading-[normal] tracking-[0.6px] text-xs text-[color:var(--primary-two-design,#F97316)]">Password</p>
+                  <input placeholder="Password" id="password" name="password" type="password" required className="border placeholder-gray-300 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                      rounded-[10px] border-solid border-[rgba(31,31,31,0.50)] w-[70vw] md:w-[30vw] h-12 shrink-0"/>
+                </div>
+                <div className="flex w-[70vw] md:w-[30vw] h-12 flex-col justify-center shrink-0 bg-[color:var(--primary-two-design,#F97316)] rounded-[10px]">
+                  <a className="text-[#FAFCFC] text-center text-sm not-italic font-bold leading-[normal] tracking-[0.7px]">Sign In</a>
+                </div>
+                <div className="w-[70vw] md:w-[30vw] h-12 shrink-0 border rounded-[10px] border-solid border-[#1F1F1F] flex justify-center items-center">
+                  <img src="/google.png" className="w-6 h-6 shrink-0" />
+                  <p className="ms-2 text-[#1F1F1F] text-center text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">Sign in with Google</p>
+                </div>
+                <p className="text-[#1F1F1F] text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">You don't have an account yet? <span className="text-[color:var(--primary-two-design,#F97316)]">Sign up</span></p>
+                <p className="text-[#1F1F1F] text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">Go back to <span className="text-[color:var(--primary-two-design,#F97316)]">home page</span></p>
+              </div>
+            </form> 
     </div>
   )
 }
