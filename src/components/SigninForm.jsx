@@ -21,6 +21,7 @@ export default function SigninForm() {
         alert('User signed in!')
         localStorage.setItem('token', response.data.response.token)
         localStorage.setItem('user', JSON.stringify(response.data.response.user))
+        localStorage.setItem('photo', response.data.response.photo)
         navigate('/')
       } else {
         alert('Authentication failed!')

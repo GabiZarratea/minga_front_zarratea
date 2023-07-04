@@ -9,6 +9,7 @@ export default function NavBar() {
   const isLoggedIn = () => {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
+    const photo = localStorage.getItem('photo')
     return token && user;
   };
 
@@ -48,7 +49,7 @@ export default function NavBar() {
               </div>
               {isLoggedIn() ? (
                 <div className="flex flex-row items-center text-center lg:justify-between sm:w-[400px] w-[250px]">
-                  <img src="/UserImage.png" className="w-[50px] mb-2 sm:m-0" />
+                  <img src={localStorage.getItem('photo')} className="w-[50px] mb-2 sm:m-0" />
                   <div className="flex flex-col ms-3">
                     <p className="text-[16px]">{localStorage.getItem('user')}</p>
                   </div>
