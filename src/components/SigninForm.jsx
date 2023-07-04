@@ -1,10 +1,11 @@
-import React from 'react'
-
-import { useRef} from 'react'
+import { React, useRef } from 'react'
 import { api, apiUrl, endpoints } from '../utils/api'
-import { Link as Anchor } from "react-router-dom";
+import { Link as Anchor , useNavigate} from "react-router-dom"
 
 export default function SigninForm() {
+
+    let navigate = useNavigate()
+
     let inputEmail = useRef("")
     let inputPassword = useRef("")
 
@@ -19,6 +20,7 @@ export default function SigninForm() {
             let { data } = await api.post(apiUrl + endpoints.sign_in, datos)
             await setUser(data.user)
             console.log(user)
+            navigate('/')
         }
         catch (error) {
             console.log(error.message)
@@ -42,7 +44,7 @@ export default function SigninForm() {
                       rounded-[10px] border-solid border-[rgba(31,31,31,0.50)] w-[70vw] md:w-[30vw] h-12 shrink-0"/>
                 </div>
                 <button className="flex w-[70vw] md:w-[30vw] h-12 flex-col items-center justify-center shrink-0 bg-[color:var(--primary-two-design,#F97316)] rounded-[10px]">
-                  <a className="text-[#FAFCFC] text-center text-sm not-italic font-bold leading-[normal] tracking-[0.7px]">Sign In</a>
+                <Anchor onClick={handleFormSubmit} className="text-[#FAFCFC] text-center text-sm not-italic font-bold leading-[normal] tracking-[0.7px]">Sign In</Anchor>
                 </button>
                 <button className="w-[70vw] md:w-[30vw] h-12 shrink-0 border rounded-[10px] border-solid border-[#1F1F1F] flex justify-center items-center">
                   <img src="/google.png" className="w-6 h-6 shrink-0" />

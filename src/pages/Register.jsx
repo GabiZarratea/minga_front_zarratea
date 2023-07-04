@@ -1,9 +1,11 @@
 import { useRef } from "react";
-import { api, apiUrl, endpoints } from "../utils/api.js";
-import { Link as Anchor } from "react-router-dom";
+import { api, apiUrl, endpoints } from "../utils/api.js"
+import { Link as Anchor , useNavigate } from "react-router-dom"
 
 
 export default function Register() {
+
+  let navigate = useNavigate()
 
   let email = useRef("")
   let photo = useRef("")
@@ -23,10 +25,13 @@ export default function Register() {
     try{
       let user = await api.post(apiUrl + endpoints.register, data)
       console.log(user)
+      navigate('/signin')
     }
     catch (error){
       console.log(error.message)
     }
+
+     
   }
     return (
       <>
@@ -48,7 +53,7 @@ export default function Register() {
                 </div>
                 <div>
                   <p className="bg-white pt-0 pr-2 pb-0 pl-2 mr-0 mb-0 ml-2 not-italic font-normal leading-[normal] tracking-[0.6px] text-xs text-[color:var(--primary-two-design,#F97316)]">Password</p>
-                  <input ref={password} placeholder="Password" id="password" name="password" type="text" required className="border placeholder-gray-300 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                  <input ref={password} placeholder="Password" id="password" name="password" type="password" required className="border placeholder-gray-300 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                       rounded-[10px] border-solid border-[rgba(31,31,31,0.50)] w-[70vw] md:w-[30vw] h-12 shrink-0"/>
                 </div>
                 <div className="flex items-center justify-start w-[70vw] md:w-[30vw]">
