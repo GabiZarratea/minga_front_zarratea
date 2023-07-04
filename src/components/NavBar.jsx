@@ -51,6 +51,7 @@ export default function NavBar() {
                   <img src="/UserImage.png" className="w-[50px] mb-2 sm:m-0" />
                   <div className="flex flex-col ms-3">
                     <p className="text-[16px]">{localStorage.getItem('user')}</p>
+
                   </div>
                   <img
                     src="/filled.png"

@@ -29,7 +29,6 @@ export default function SigninForm() {
       alert('Error occurred!')
     }
   }
-
   return (
     <div className='flex flex-wrap flex-col justify-center items-center w-[100%] lg:w-[50%]'>
       <img className='hidden lg:flex' src="/logoDos.png" alt="" />
@@ -58,6 +57,7 @@ export default function SigninForm() {
           <p className="text-[#1F1F1F] text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">Go back to <span className="text-[color:var(--primary-two-design,#F97316)]">home page</span></p>
         </div>
       </form>
+
     </div>
   )
 }
