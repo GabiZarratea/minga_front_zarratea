@@ -59,6 +59,7 @@ export default function SigninForm() {
           <p className="text-[#1F1F1F] text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">Go back to <span className="text-[color:var(--primary-two-design,#F97316)]">home page</span></p>
         </div>
       </form>
+
     </div>
   )
 }
