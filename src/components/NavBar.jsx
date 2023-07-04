@@ -23,6 +23,7 @@ export default function NavBar() {
                   </div>
                   <div className='lg:text-lg flex flex-col'>
                   <Anchor to={'/'} className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> Home </Anchor>
+                  <Anchor to={'/signin'} className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> Sign In </Anchor>
                   <Anchor to={'/register'} className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> Register </Anchor>
                   <Anchor className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> Comics </Anchor>
                   <Anchor className='p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]'> My Comics </Anchor >

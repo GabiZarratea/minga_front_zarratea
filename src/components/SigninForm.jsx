@@ -2,6 +2,7 @@ import React from 'react'
 
 import { useRef} from 'react'
 import { api, apiUrl, endpoints } from '../utils/api'
+import { Link as Anchor } from "react-router-dom";
 
 export default function SigninForm() {
     let inputEmail = useRef("")
@@ -25,9 +26,9 @@ export default function SigninForm() {
     }
   return (
     <div className='flex flex-wrap flex-col justify-center items-center w-[100%] lg:w-[50%]'>
-        <img className='hidden lg:flex' src="/logoDos.png" alt="" />
-        <h2 className='text-center text-[60px] flex-wrap font-bold'>Welcome <span className='text-orange-600'>back!</span></h2>
-        <p className='text-center text-[20px] flex-wrap font-bold'>Discover manga, manhua and manhwa, track your progress, have fun, read manga.</p>
+        <img className='hidden lg:flex w-60 p-6' src="/logoDos.png" alt="" />
+        <p className="text-[#1F1F1F] text-center text-[32px] not-italic font-semibold leading-[normal] tracking-[1.6px]">Welcome <span className='text-orange-600'>back!</span></p>
+            <p className="w-[80%] md:w-[50%] text-[rgba(31,31,31,0.75)] text-center text-xs not-italic font-semibold leading-[normal] tracking-[0.6px] mt-3">Discover manga, manhua and manhwa, track your progress, have fun, read manga.</p>
         <form onSubmit={handleFormSubmit} method="POST" className="w-full">
               <div className="w-full mt-8 mr-0 mb-0 ml-0 space-y-8 flex flex-col items-center">
                 <div>
@@ -47,8 +48,8 @@ export default function SigninForm() {
                   <img src="/google.png" className="w-6 h-6 shrink-0" />
                   <p className="ms-2 text-[#1F1F1F] text-center text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">Sign in with Google</p>
                 </button>
-                <p className="text-[#1F1F1F] text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">You don't have an account yet? <span className="text-[color:var(--primary-two-design,#F97316)]">Sign up</span></p>
-                <p className="text-[#1F1F1F] text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">Go back to <span className="text-[color:var(--primary-two-design,#F97316)]">home page</span></p>
+                <p className="text-[#1F1F1F] text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">You don't have an account yet? <Anchor to={'/register'} className="text-[color:var(--primary-two-design,#F97316)]">Sign Up</Anchor></p>
+                <p className="text-[#1F1F1F] text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">Go back to <Anchor to={'/'} className="text-[color:var(--primary-two-design,#F97316)]">home page</Anchor></p>
               </div>
             </form> 
     </div>
