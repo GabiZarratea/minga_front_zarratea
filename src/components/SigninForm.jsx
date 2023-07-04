@@ -30,7 +30,6 @@ export default function SigninForm() {
       alert('Error occurred!')
     }
   }
-
   return (
     <div className='flex flex-wrap flex-col justify-center items-center w-[100%] lg:w-[50%]'>
       <img className='hidden lg:flex' src="/logoDos.png" alt="" />
