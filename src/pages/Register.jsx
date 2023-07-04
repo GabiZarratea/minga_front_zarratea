@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { api, apiUrl, endpoints } from "../utils/api.js"
 import { Link as Anchor , useNavigate } from "react-router-dom"
+import Swal from "sweetalert2"
 
 
 export default function Register() {
@@ -25,9 +26,21 @@ export default function Register() {
     try{
       let user = await api.post(apiUrl + endpoints.register, data)
       console.log(user)
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'New user creation successful',
+        showConfirmButton: false,
+        timer: 1500
+      })
       navigate('/signin')
     }
     catch (error){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+      })
       console.log(error.message)
     }
 
