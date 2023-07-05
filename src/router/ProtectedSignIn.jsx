@@ -1,8 +1,8 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
-import Register from '../pages/Register'
+import SignIn from '../pages/signin'
 
-const ProtectedRoute = () => {
+const ProtectedSignIn = () => {
 
     const isLoggedIn = () => localStorage.getItem('token') && localStorage.getItem('user')
     
@@ -11,7 +11,7 @@ const ProtectedRoute = () => {
         return <Navigate to={'/NotAllow'} />
 
     }
-    return !isLoggedIn() && <Register />
+    return !isLoggedIn() && <SignIn />
 }
 
-export default ProtectedRoute
+export default ProtectedSignIn
