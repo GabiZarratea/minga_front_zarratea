@@ -1,7 +1,7 @@
 import { Link as Anchor } from 'react-router-dom';
 
 export default function Hero() {
-  const isLoggedIn = localStorage.getItem('token') && localStorage.getItem('user');
+  const isLoggedIn = () => localStorage.getItem('token') && localStorage.getItem('user')
 
   return (
     <div>
@@ -10,8 +10,8 @@ export default function Hero() {
           For the love of manga
         </p>
         <p className="text-white text-center text-xl leading-[95.187%]">Explore our varieties</p>
-        {isLoggedIn ? (
-          <Anchor to={'/mangas'} className='bg-white text-orange-600 flex justify-center items-center gap-2.5 px-[55px] py-5 text-center text-xl font-medium leading-[95.187%] rounded-md w-60'>
+        {isLoggedIn() ? (
+          <Anchor to={'/'} className='bg-white text-orange-600 flex justify-center items-center gap-2.5 px-[55px] py-5 text-center text-xl font-medium leading-[95.187%] rounded-md w-80'>
             Explore Mangas!
           </Anchor>
         ) : (
@@ -25,8 +25,8 @@ export default function Hero() {
           <p className="flex text-[64px] font-bold leading-[95.187%]">For the love of manga</p>
           <p className="text-2xl leading-[95.187%]">Explore our varieties</p>
           <p className="font-semibold leading-[95.187%]">#MingaLove❤️</p>
-          {isLoggedIn ? (
-            <Anchor to={'/mangas'} className='bg-white text-orange-600 flex justify-center items-center gap-2.5 px-[55px] py-5 text-center text-xl font-medium leading-[95.187%] rounded-md w-60'>
+          {isLoggedIn() ? (
+            <Anchor to={'/'} className='bg-white text-orange-600 flex justify-center items-center gap-2.5 px-[55px] py-5 text-center text-xl font-medium leading-[95.187%] rounded-md w-80'>
               Explore Mangas!
             </Anchor>
           ) : (

@@ -2,6 +2,9 @@ import React from 'react'
 import {Link as Anchor} from 'react-router-dom'
 
 export default function Footer() {
+
+  const isLoggedIn = () => localStorage.getItem('token') && localStorage.getItem('user')
+
   return (
     <footer className="h-[5vh] bg-white w-full">
     <div className="lg:hidden flex justify-around items-center mt-1">
@@ -15,7 +18,7 @@ export default function Footer() {
       <div className="flex flex-row justify-around items-center w-full p-5">
         <div className="flex flex-row gap-10 font-medium text-lg">
         <Anchor to={'/'}> Home </Anchor>
-        <Anchor to={''}> Mangas </Anchor>
+        <Anchor to={ isLoggedIn() ? '/mangas' : '/NotAllow' }> Mangas </Anchor>
         </div>
         <img src="/logoDos.png" className="h-[70px]" />
         <div className="flex flex-col">
