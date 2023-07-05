@@ -1,6 +1,15 @@
 import React, { useRef } from 'react'
 import { api, apiUrl, endpoints } from '../utils/api'
 import { Link as Anchor , useNavigate } from 'react-router-dom'
+import Swal from "sweetalert2"
+
+function alertSoon(){
+  Swal.fire({
+    text: 'We are having problems, this option is available soon!',
+    width: 600,
+    padding: '3em'
+  })
+}
 
 export default function SigninForm() {
     let navigate = useNavigate()
@@ -18,23 +27,37 @@ export default function SigninForm() {
       let response = await api.post(apiUrl + endpoints.signin, data)
       console.log(response)
       if (response.data.success) {
-        alert('User signed in!')
+
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'User signed in!',
+          showConfirmButton: false,
+          timer: 1500
+        })
         localStorage.setItem('token', response.data.response.token)
         localStorage.setItem('user', JSON.stringify(response.data.response.user))
         localStorage.setItem('photo', response.data.response.photo)
         navigate('/')
       } else {
-        alert('Authentication failed!')
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Authentication failed!',
+        })
       }
     } catch (error) {
-      alert('Error occurred!')
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Authentication failed!',
+      })
     }
   }
   return (
     <div className='flex flex-wrap flex-col justify-center items-center w-[100%] lg:w-[50%]'>
-      <img className='hidden lg:flex' src="/logoDos.png" alt="" />
-      <h2 className='text-center text-[60px] flex-wrap font-bold'>Welcome <span className='text-orange-600'>back!</span></h2>
-      <p className='text-center text-[20px] flex-wrap font-bold'>Discover manga, manhua and manhwa, track your progress, have fun, read manga.</p>
+      <p className="text-[#1F1F1F] text-center text-[32px] not-italic font-semibold leading-[normal] tracking-[1.6px]">Welcome <span className='text-orange-600'>back!</span></p>
+      <p className="w-[80%] md:w-[50%] text-[rgba(31,31,31,0.75)] text-center text-xs not-italic font-semibold leading-[normal] tracking-[0.6px] mt-3">Discover manga, manhua and manhwa, track your progress, have fun, read manga.</p>
       <form onSubmit={signin} className="w-full">
         <div className="w-full mt-8 mr-0 mb-0 ml-0 space-y-8 flex flex-col items-center">
           <div>
@@ -52,10 +75,10 @@ export default function SigninForm() {
           </button>
           <button className="w-[70vw] md:w-[30vw] h-12 shrink-0 border rounded-[10px] border-solid border-[#1F1F1F] flex justify-center items-center">
             <img src="/google.png" className="w-6 h-6 shrink-0" />
-            <p className="ms-2 text-[#1F1F1F] text-center text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">Sign in with Google</p>
+            <Anchor onClick={alertSoon} className="ms-2 text-[#1F1F1F] text-center text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">Sign in with Google</Anchor>
           </button>
-          <p className="text-[#1F1F1F] text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">You don't have an account yet? <span className="text-[color:var(--primary-two-design,#F97316)]">Sign up</span></p>
-          <p className="text-[#1F1F1F] text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">Go back to <span className="text-[color:var(--primary-two-design,#F97316)]">home page</span></p>
+          <p className="text-[#1F1F1F] text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">Already have an account? <Anchor to={'/register'} className="text-[color:var(--primary-two-design,#F97316)]">Sign Up</Anchor></p>
+                <p className="text-[#1F1F1F] text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">Go back to <Anchor to={'/'} className="text-[color:var(--primary-two-design,#F97316)]">home page</Anchor></p>
         </div>
       </form>
 

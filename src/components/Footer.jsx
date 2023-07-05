@@ -15,7 +15,7 @@ export default function Footer() {
       <div className="flex flex-row justify-around items-center w-full p-5">
         <div className="flex flex-row gap-10 font-medium text-lg">
         <Anchor to={'/'}> Home </Anchor>
-        <Anchor to={''}> Mangas </Anchor>
+        <Anchor to={'/NotAllow'}> Mangas </Anchor>
         </div>
         <img src="/logoDos.png" className="h-[70px]" />
         <div className="flex flex-col">
