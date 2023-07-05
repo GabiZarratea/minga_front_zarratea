@@ -39,6 +39,7 @@ export default function NavBar() {
         title: 'Oops...',
         text: 'Failed to sign out!',
         timer: 1500
+
       })
     }
   }
