@@ -20,9 +20,16 @@ export default function MangaForm() {
       category_id: selectedOption,
       author_id: "1",
     };
+    
+    let token = localStorage.getItem("token");
+    let configs = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    }
 
     axios
-      .post("http://localhost:8080/api/mangas/create", data)
+      .post("http://localhost:8080/api/mangas/create", data, configs)
       .then((res) => {
         console.log(res);
         Swal.fire({
