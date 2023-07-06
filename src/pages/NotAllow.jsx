@@ -2,6 +2,9 @@ import NavBar from "../components/NavBar"
 import {Link as Anchor} from 'react-router-dom'
 
 export default function Welcome() {
+  
+  const isLoggedIn = () => localStorage.getItem('token') && localStorage.getItem('user')
+
     return (
       <>
         <NavBar />
@@ -10,7 +13,15 @@ export default function Welcome() {
                   <p className="flex text-3xl md:text-[64px] font-bold leading-[95.187%]">For the love of manga</p>
                   <p className="text-2xl leading-[95.187%]">Explore our varieties</p>
                   <p className="font-semibold leading-[95.187%]">#MingaLove❤️</p>
-                  <Anchor to={'/signin'} className='bg-white text-orange-600 flex justify-center items-center gap-2.5 px-[55px] py-5 text-center text-xl font-medium leading-[95.187%] rounded-md w-60'> Login! </Anchor>
+                  {isLoggedIn() ? (
+                    <Anchor to={'/'} className='bg-white text-orange-600 flex justify-center items-center gap-2.5 px-[55px] py-5 text-center text-xl font-medium leading-[95.187%] rounded-md w-80'>
+                      Explore Mangas!
+                    </Anchor>
+                  ) : (
+                    <Anchor to={'/signin'} className='bg-white text-orange-600 flex justify-center items-center gap-2.5 px-[55px] py-5 text-center text-xl font-medium leading-[95.187%] rounded-md w-60'>
+                      Sign In!
+                    </Anchor>
+                  )}
                 </div>
         </div>
       </>
