@@ -1,13 +1,24 @@
-import React from 'react';
+import Swal from "sweetalert2"
 
-const Alert = ({ messages, show, setShow }) => {
-  return (
-    <div className={`alert ${show ? 'show' : 'hide'}`}>
-      {messages.map((message, index) => (
-        <p key={index}>{message}</p>
-      ))}
+export default function Alert({ messages, show, setShow }){
+  const showAlert = async () => {
+    for (let i = 0; i < messages.length; i++){
+      await Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: <p key={i}>{messages[i]}</p>,
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
+  }
+
+  return show && (
+    <div className="alert">
+      {showAlert()}
+      <button onClick={() => setShow(false)}>
+        Cerrar
+      </button>
     </div>
-  );
-};
-
-export default Alert;
+  )
+}
