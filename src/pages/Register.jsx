@@ -2,6 +2,7 @@ import { useRef } from "react"
 import { apiUrl, endpoints } from "../utils/api.js"
 import { Link as Anchor , useNavigate } from "react-router-dom"
 import axios from "axios"
+import Swal from "sweetalert2"
 
 export default function Register() {
 
