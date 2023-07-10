@@ -39,7 +39,6 @@ export default function NavBar() {
         title: 'Oops...',
         text: 'Failed to sign out!',
         timer: 1500
-
       })
     }
   }
@@ -67,7 +66,7 @@ export default function NavBar() {
               }
  
               <div className="lg:text-lg flex flex-col">
-                { isLoggedIn() ? null : ( <Anchor to={'/'} className="p-3 text-lg hover:bg-white hover:text-orange-600 rounded-md w-[300px]">Home</Anchor> ) }
+                <Anchor to={'/'} className="p-3 text-lg hover:bg-white hover:text-orange-600 rounded-md w-[300px]">Home</Anchor>
                 { isLoggedIn() ? null : ( <Anchor to={'/signin'} className="p-3 text-lg hover:bg-white hover:text-orange-600 rounded-md w-[300px]">Log In</Anchor> ) }
                 { isLoggedIn() ? null : ( <Anchor to={'/register'} className="p-3 text-lg hover:bg-white hover:text-orange-600 rounded-md w-[300px]">Register</Anchor> ) }
                 { isLoggedIn() ? ( <Anchor to={"/manga-form"} className="p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]">{" "}New manga{" "}</Anchor> ) : null }

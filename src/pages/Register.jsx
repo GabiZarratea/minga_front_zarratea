@@ -1,8 +1,8 @@
-import { useRef } from "react";
-import { api, apiUrl, endpoints } from "../utils/api.js"
+import { useRef } from "react"
+import { apiUrl, endpoints } from "../utils/api.js"
 import { Link as Anchor , useNavigate } from "react-router-dom"
+import axios from "axios"
 import Swal from "sweetalert2"
-
 
 export default function Register() {
 
@@ -30,28 +30,28 @@ export default function Register() {
       password: password.current.value
     }
     console.log(data)
-
-    try{
-      let user = await api.post(apiUrl + endpoints.register, data)
-      console.log(user)
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'New user creation successful',
-        showConfirmButton: false,
-        timer: 1500
+    
+      axios.post(apiUrl + endpoints.register, data)
+      .then(res => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'New user creation successful',
+          showConfirmButton: false,
+          timer: 1500
       })
       navigate('/signin')
-    }
-    catch (error){
+      })
+      .catch(error => {
+      const err = error.response.data.messages
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Something went wrong!',
+        text: err || 'This email is already registered'
       })
-      console.log(error.message)
-    }
+    })
   }
+
     return (
       <>
         <div className="flex w-full h-[100vh] items-center justify-center">
