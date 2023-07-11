@@ -6,5 +6,6 @@ export const endpoints = {
     register: "auth/register",
     signout: "auth/signout",
     read_mangas: "mangas",
-    read_categories: "categories"
+    read_categories: "categories",
+    chapters: "chapters"
 }

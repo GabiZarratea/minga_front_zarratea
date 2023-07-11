@@ -48,15 +48,15 @@ export default function NavBar() {
       <div className="flex w-[90%] justify-between items-center p-6">
         <img src="/Menu.svg" onClick={() => setDisplay(!display)} />
         {display && (
-          <div className="drawer sm:flex text-center sm:text-start min-w-[100%] sm:min-w-[410px] h-[100vh] flex-col sm:items-start gap-[147px] p-6 bg-gradient-to-b from-orange-600 to-orange-500 fixed top-0 left-0 shadow-2xl">
+          <div className="drawer sm:flex text-start min-w-[300px] sm:min-w-[410px] h-[100vh] flex-col sm:items-start gap-[147px] p-6 bg-gradient-to-b from-orange-600 to-orange-500 fixed top-0 left-0 shadow-2xl">
             <div className="flex h-[525px] flex-col items-center sm:items-start gap-8 self-stretch">
               {isLoggedIn() ? (
-                <div className="flex flex-row items-center text-center lg:justify-between sm:w-[400px] w-[250px]">
-                  <img src={localStorage.getItem('photo')} className="w-[50px] mb-2 sm:m-0 rounded-full" />
+                <div className="flex flex-row items-center text-center lg:justify-between sm:w-[400px] w-full">
+                  <img src={localStorage.getItem('photo')} className="w-[35px] sm:w-[50px] mb-2 sm:m-0 rounded-full" />
                   <div className="flex flex-col ms-3">
-                    <p className="text-[16px]">{localStorage.getItem('user')}</p>
+                    <p className="text-[14px] sm:text-[16px]">{localStorage.getItem('user')}</p>
                   </div>
-                    <img src="/filled.png" onClick={() => setDisplay(!display)} className="hidden sm:block ms-[20%] w-[24px] h-[24px]" />
+                    <img src="/filled.png" onClick={() => setDisplay(!display)} className="block ms-[20%] w-[24px] h-[24px]" />
                   </div>
               ) : <div className="w-11/12 flex justify-end items-center" onClick={() => setDisplay(!display)}>
                     <svg className="w-12 p-1 text-white border-white border-2 hover:bg-[#ff7b00] rounded-lg" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -70,7 +70,7 @@ export default function NavBar() {
                 { isLoggedIn() ? null : ( <Anchor to={'/signin'} className="p-3 text-lg hover:bg-white hover:text-orange-600 rounded-md w-[300px]">Log In</Anchor> ) }
                 { isLoggedIn() ? null : ( <Anchor to={'/register'} className="p-3 text-lg hover:bg-white hover:text-orange-600 rounded-md w-[300px]">Register</Anchor> ) }
                 { isLoggedIn() ? ( <Anchor to={"/manga-form"} className="p-3 hover:bg-white hover:text-orange-600 rounded-md w-[300px]">{" "}New manga{" "}</Anchor> ) : null }
-                { isLoggedIn() ? ( <Anchor className="p-3 text-lg hover:bg-white hover:text-orange-600 rounded-md w-[300px]">Comics</Anchor> ) : null }
+                { isLoggedIn() ? ( <Anchor to={'/mangas'} className="p-3 text-lg hover:bg-white hover:text-orange-600 rounded-md w-[300px]">Mangas</Anchor> ) : null }
                 { isLoggedIn() ? ( <Anchor className="p-3 text-lg hover:bg-white hover:text-orange-600 rounded-md w-[300px]">My Comics</Anchor> ) : null }
                 { isLoggedIn() ? ( <Anchor className="p-3 text-lg hover:bg-white hover:text-orange-600 rounded-md w-[300px]">Favorites</Anchor> ) : null }
                 { isLoggedIn() ? ( <Anchor onClick={signout} className="p-3 text-lg hover:bg-white hover:text-orange-600 rounded-md w-[300px]">Log Out</Anchor> ) : null }

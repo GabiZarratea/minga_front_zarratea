@@ -1,13 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
 import Register from '../pages/Register'
 import Main from "../layouts/Main";
-import SignIn from "../pages/signin";
+import SignIn from '../pages/Signin'
 import Index from "../pages/Index";
 import Welcome from "../pages/NotAllow"
-import ProtectedRoute from "./ProtectedRoute"
+import { ProtectedRoute, ProtectedSignIn, ProtectedRouteMangaDetail, ProtectedRouteMangas} from "./ProtectedRoute"
 import FormManga from "../pages/Manga-Form";
 import Mangas from "../pages/Mangas";
-import ProtectedSignIn from "./ProtectedSignIn";
+import MangaDetail from "../pages/MangaDetail";
 
 
 
@@ -22,34 +22,45 @@ const router = createBrowserRouter([
             },
             {
                 path:'/mangas',
-                element: <Mangas/>
-            }
-
+                element: (
+                    <ProtectedRouteMangas>
+                    <Mangas />
+                    </ProtectedRouteMangas> 
+                )
+            },
+            {
+                path:'/manga/:id',
+                element: (
+                    <ProtectedRouteMangaDetail>
+                    <MangaDetail />
+                    </ProtectedRouteMangaDetail>
+                )
+            },
+            {
+                path:'/NotAllow',
+                element: <Welcome />
+            },
+            {
+                path:'/signin',
+                element: (
+                    <ProtectedSignIn>
+                    <SignIn />
+                    </ProtectedSignIn>
+                )
+            },
+            {
+                path:'/register',
+                element: (
+                    <ProtectedRoute>
+                    <Register />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/manga-form",
+                element: <FormManga />,
+              }
         ]
-    },
-    {
-        path:'/register',
-        element: (
-            <ProtectedRoute>
-            <Register />
-            </ProtectedRoute>
-        )
-    },
-    {
-        path:'/signin',
-        element: (
-            <ProtectedSignIn>
-            <SignIn />
-            </ProtectedSignIn>
-        )
-    },
-    {
-      path: "/manga-form",
-      element: <FormManga />,
-    },
-    {
-        path:'/NotAllow',
-        element: <Welcome />
     }
 ])
 
