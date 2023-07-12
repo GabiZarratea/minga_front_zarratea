@@ -8,7 +8,7 @@ export default function Welcome() {
     return (
       <>
         <NavBar />
-        <div className ='min-h-screen text-white bg-cover bg-center bg-no-repeat bg-[url("/background-1-web.png")] flex flex-col justify-center items-center'>
+        <div className ='min-h-screen w-full text-white bg-cover bg-center bg-no-repeat bg-[url("/background-1-web.png")] flex flex-col justify-center items-center'>
                 <div className="items-center gap-[25px] inline-flex flex-col justify-center md:p-1">
                   <p className="flex text-3xl md:text-[64px] font-bold leading-[95.187%]">For the love of manga</p>
                   <p className="text-2xl leading-[95.187%]">Explore our varieties</p>

@@ -131,7 +131,7 @@ const Mangas = () => {
                 borderColor(index)
               }`}
             >
-              <Link to={`/manga/:${manga._id}`}>
+              <Link to={`/manga/${manga._id}`}>
                 <p className="text-[20px] md:text-2xl text-center inline-flex flex-wrap min-w-[12rem] md:min-w-[17 rem] xl:min-w-[30rem]">
                   {manga.title}
                 </p>
