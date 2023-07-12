@@ -8,6 +8,9 @@ import {
   setPagination,
 } from "../redux/actions/mangas.js";
 import { Link } from "react-router-dom";
+import { LS } from '../utils/localStorageUtils';
+
+let token = LS.get('token')
 
 const Mangas = () => {
   const dispatch = useDispatch();
@@ -20,7 +23,8 @@ const Mangas = () => {
 
   const getMangas = async () => {
     try {
-      const { data } = await api.get(apiUrl + endpoints.read_mangas, {
+      const { data } = await api.get(apiUrl + endpoints.read_mangas,{
+        headers: { Authorization: `Bearer ${token}` }}, {
         params: {
           title: title.trim(),
           category: categoriesSelected.join(","),
@@ -37,7 +41,8 @@ const Mangas = () => {
 
   const getCategories = async () => {
     try {
-      const { data } = await api.get(apiUrl + endpoints.read_categories);
+      const { data } = await api.get(apiUrl + endpoints.read_categories,{
+        headers: { Authorization: `Bearer ${token}` }});
       dispatch(setCategories(data.categories));
     } catch (error) {
       console.log(error);
