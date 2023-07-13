@@ -8,7 +8,7 @@ export default function Carousel() {
 
     useEffect(() => {
         axios.get("http://localhost:8080/api/categories")
-        .then(res => setCategories(res.data.response))
+        .then(res => setCategories(res.data.categories))
         .catch(err => console.log(err))
     }, [])
 

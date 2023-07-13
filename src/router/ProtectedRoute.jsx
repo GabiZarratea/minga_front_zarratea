@@ -51,7 +51,7 @@ const ProtectedRouteMangas = () => {
 
 const ProtectedRouteMangaDetail = () => {
   const token = LS.get('token');
-
+  
   const isLoggedIn = () => {
     return token
   };
