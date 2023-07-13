@@ -13,7 +13,6 @@ export const setChapters = (chapters) => {
 };
 
 export const setPagination = (pagination) => {
-  console.log(pagination)
   return {
     type: "SET_PAGINATION",
     payload: pagination,

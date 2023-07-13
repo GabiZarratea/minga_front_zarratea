@@ -15,7 +15,7 @@ export default function Hero() {
         </p>
         <p className="text-white text-center text-xl leading-[95.187%]">Explore our varieties</p>
         {isLoggedIn() ? (
-          <Anchor to={'/'} className='bg-white text-orange-600 flex justify-center items-center gap-2.5 px-[55px] py-5 text-center text-xl font-medium leading-[95.187%] rounded-md w-80'>
+          <Anchor to={'/mangas'} className='bg-white text-orange-600 flex justify-center items-center gap-2.5 px-[55px] py-5 text-center text-xl font-medium leading-[95.187%] rounded-md w-80'>
             Explore Mangas!
           </Anchor>
         ) : (

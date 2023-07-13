@@ -5,11 +5,15 @@ import { api } from "../utils/api";
 import { setManga, setChapters, setPagination } from "../redux/actions/manga.js";
 
 const MangaDetail = () => {
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const { manga, chapters, pagination} = useSelector((state) => state.manga);
   const { prev, next } = pagination
   const mangaId = manga?._id
+
+  const [totalPages, setTotalPages] = useState(0)
+  const [activeTab, setActiveTab] = useState("mangas")
 
   const fetchMangaDetail = async () => {
     if (manga._id !== id) {
@@ -32,12 +36,6 @@ const MangaDetail = () => {
     }
   }; 
 
-  useEffect(() => {
-    fetchMangaDetail();
-    fetchChapters(pagination.currentPage);
-  }, [pagination]);
-
-
   const handlePrevPage = async () => {
     if(pagination.currentPage > 1){
       dispatch(setPagination({currentPage: pagination.currentPage -1, prev: true, next: true}))
@@ -46,19 +44,10 @@ const MangaDetail = () => {
       dispatch(setPagination({currentPage: pagination.currentPage -1, prev: false, next: true}))
     } 
   }
-  console.log(pagination.currentPage)
-  console.log(pagination.prev)
-  console.log(pagination.next)
-  
+
   const handleNextPage = async () => {
-    console.log(pagination)
       dispatch(setPagination({currentPage: pagination.currentPage +1, prev: true, next: true}))
   }
-
-
-  const [activeTab, setActiveTab] = useState("mangas")
-
-  const [totalPages, setTotalPages] = useState(0)
 
   const switchToMangaTab = () => {
     setActiveTab("mangas");
@@ -68,7 +57,12 @@ const MangaDetail = () => {
     setActiveTab("chapters");
   };
 
-  const company_name = (manga.author_id?.name + " " + manga.author_id?.last_name)
+  const company_name =(manga.author_id?.name ? ` ${manga.author_id.name}` : '') + ' ' + (manga.author_id?.last_name ? ` ${manga.author_id.last_name}` : '');
+  
+  useEffect(() => {
+    fetchMangaDetail();
+    fetchChapters(pagination.currentPage);
+  }, [pagination]);
 
   return (
     <div className='bg-slate-200 min-h-[screen] flex flex-col items-center w-full'>
@@ -118,18 +112,18 @@ const MangaDetail = () => {
               )
             }
             { activeTab === "chapters" && (
-                <div className='sm:mt-[120px] sm:w-[60%] flex flex-col items-center w-[90%] mb-12'>
+                <div className='sm:w-[60%] flex flex-col items-center w-[90%] mb-12'>
                   <p className="m-4 text-[color:var(--black,#222)] text-2xl not-italic leading-[95.187%]">Chapters</p>
                   <div className='w-[90%] h-[40px] shrink-0 flex items-center m-4 shadow-[0px_0px_7px_0px_rgba(0,0,0,0.15)] rounded-[20px]'>
                       <Anchor onClick={switchToMangaTab} className='flex w-[50%] h-[34px] flex-col justify-center items-center shrink-0 text-[color:var(--secondary-gray,#9D9D9D)] text-center text-md not-italic font-normal leading-[normal]'>Manga</Anchor>
                       <Anchor onClick={switchToChaptersTab} className='w-[50%] h-[34.311px] shrink-0 rounded-[20px] bg-orange-500 text-[color:var(--white,#FFF)] text-center text-md not-italic font-normal leading-[normal] flex flex-col justify-center'>Chapters</Anchor>
                   </div>
                   {chapters.map((chapter) => (
-                    <div key={chapter.id} className="flex w-[90%] justify-between items-center m-3">
+                    <div key={chapter._id} className="flex w-[90%] justify-between items-center m-3">
                       <img src={chapter.cover_photo} className="w-[25%] h-[80px] md:h-[150px] object-cover" />
                       <p className="text-black w-[45%] text-center text-xl not-italic leading-[95.187%] font-medium">{chapter.title}</p>
                       <div className="flex w-[25%] h-12 flex-col justify-center shrink-0 bg-[color:var(--primary-two-design,#F97316)] rounded-[25px]">
-                        <Anchor className="text-[#FAFCFC] text-center text-md not-italic font-bold leading-[normal] tracking-[0.7px]">Read</Anchor>
+                        <Anchor to={`/Chapter/${chapter._id}/1`} className="text-[#FAFCFC] text-center text-md not-italic font-bold leading-[normal] tracking-[0.7px]">Read</Anchor>
                       </div>
                       
                     </div>
