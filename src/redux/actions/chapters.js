@@ -11,5 +11,16 @@ export const chapterDataAction = createAction(
     };
   }
 );
+// export const mangaIdAction = createAction(
+//   `mangaIdAction`, //nombre de la accion
+//   (object) => {
+//     return {
+//       payload: {
+//         mangaId: object.mangaId,
+//       },
+//     };
+//   }
+// );
+
 // const actions = { chapterData };
 // export default actions;

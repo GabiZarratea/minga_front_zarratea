@@ -5,6 +5,7 @@ import MangaDetails from "../pages/MangaDetail";
 import SignIn from "../pages/Signin";
 import Mangas from "../pages/Mangas";
 import MangaForm from "../components/MangaForm";
+import Chapter from "../pages/chapter";
 import { LS } from "../utils/localStorageUtils";
 
 const ProtectedRoute = () => {
@@ -78,8 +79,8 @@ const ProtectedRouteNewManga = () => {
 };
 //Proteccion Read Manga
 const ProtectedReadManga = () => {
-  const isLoggedIn = () => localStorage.getItem("token") && localStorage.getItem("user");
-
+  const token = LS.get("token");
+  const isLoggedIn = () => token;
   if (!isLoggedIn()) {
     return <Navigate to={"/NotAllow"} />;
   }

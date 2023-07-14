@@ -23,7 +23,7 @@ export default function MangaForm() {
       cover_photo: coverPhoto,
       description: mangaDescription,
       category_id: selectedCategory[0]._id,
-      author_id: "6499d58000aa9b334218f2e9", //middleware haspermission tiene que agregar el ID
+      author_id: "6499d58000aa9b334218f2e6", //middleware haspermission tiene que agregar el ID
     };
     console.log(data, "dataa");
     setMangaTitle("");

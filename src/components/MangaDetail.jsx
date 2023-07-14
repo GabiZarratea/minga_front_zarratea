@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link as Anchor, useNavigate } from "react-router-dom";
 import { api } from "../utils/api";
 import { setManga, setChapters, setPagination } from "../redux/actions/manga.js";
+// import { mangaIdAction } from "../redux/actions/chapters";
 
 const MangaDetail = () => {
   const { id } = useParams();
@@ -14,6 +15,8 @@ const MangaDetail = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [activeTab, setActiveTab] = useState("mangas");
   const chapterAction = useSelector((store) => store.chapter);
+  // const mangaAction = useSelector((store) => store.chapter);
+  // console.log(mangaAction, "mangaaction");
   const fetchMangaDetail = async () => {
     if (manga._id !== id) {
       try {
@@ -56,6 +59,7 @@ const MangaDetail = () => {
   };
 
   const toReadChapter = (chapter) => {
+    // dispatch(mangaIdAction({ mangaId: chapter.manga_id }));
     localStorage.setItem("mangaId", chapter.manga_id);
     // console.log(chapter, "zzzzzzzzzzzzzzzzzzzzzzz");
     // console.log(chapterAction, "yyyyyyyyyyyyyyyyyyyyyyyyyy");

@@ -61,13 +61,13 @@ const router = createBrowserRouter([
       },
       {
         path: "/Chapter/:id/:page",
-        element: <Chapter />,
+        // element: <Chapter />,
 
-        // element: (
-        //   <ProtectedReadManga>
-        //     <Chapter />
-        //   </ProtectedReadManga>
-        // ),
+        element: (
+          <ProtectedReadManga>
+            <Chapter />
+          </ProtectedReadManga>
+        ),
       },
     ],
   },

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { chapterDataAction } from "../redux/actions/chapters";
+import { LS } from "../utils/localStorageUtils";
 
 export default function ReadChapter() {
   const dispatch = useDispatch();
@@ -15,17 +16,18 @@ export default function ReadChapter() {
   const [pages, setPages] = useState([]);
   const [mangaId, setMangaId] = useState(localStorage.getItem("mangaId"));
   const [title, setTitle] = useState("");
-  let token = localStorage.getItem("token");
+  const token = LS.get("token");
+  // let token = localStorage.getItem("token");
   let configs = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
-  console.log(mangaId, "MANGAID");
+  // console.log(mangaId, "MANGAID");
   useEffect(() => {
     axios(apiUrl + `api/chapters/${id}?manga_id=${mangaId}`, configs)
       .then((res) => {
-        console.log(res, "reeeees");
+        // console.log(res, "reeeees");
         setPages(res.data.chapter.pages);
         setTitle(res.data.chapter.title);
         setNextChapter(res.data.nextChapter);
@@ -71,11 +73,11 @@ export default function ReadChapter() {
             </button>
           </div>
           <div className="flex  ">
-            <div className="ml-auto  p-5 shadow-2xl pb-4	h-[90%]">
+            <div className="  p-5 shadow-2xl pb-4	h-[90%]">
               <img src={pages[page - 1]} className="h-full" />
             </div>
 
-            <div className="ml-auto p-5 shadow-2xl pb-4 h-[90%]">
+            <div className=" p-5 shadow-2xl pb-4 h-[90%]">
               <img src={pages[page]} className="h-full"></img>
             </div>
           </div>
@@ -89,17 +91,17 @@ export default function ReadChapter() {
         </div>
         {/* //// */}
         <div className="flex md:hidden">
-          <div className=" w-36 flex items-center">
+          <div className=" w-6 flex items-center">
             <button onClick={PreviousPage}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75" />
               </svg>
             </button>
           </div>
-          <div className="w-[90%]">
+          <div className="w-[90%]  pt-6">
             <img src={pages[page - 1]}></img>
           </div>
-          <div className="h-[70vh] w-36 flex items-center justify-end">
+          <div className="h-[70vh] w-6 flex items-center justify-end">
             <button onClick={NextPage}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
@@ -107,6 +109,10 @@ export default function ReadChapter() {
             </button>
           </div>
         </div>
+        {/* <div className="flex justify-center">
+          <img src="/public/tres_puntos.png" alt="" />
+          <p>{page}</p>
+        </div> */}
       </div>
       <div className="flex justify-center">
         <img src="/public/tres_puntos.png" alt="" />
