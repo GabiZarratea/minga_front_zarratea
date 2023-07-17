@@ -1,72 +1,80 @@
-import React from 'react'
-import { Navigate } from 'react-router-dom'
-import Register from '../pages/Register'
-import MangaDetails from '../pages/MangaDetail'
-import SignIn from '../pages/Signin'
-import Mangas from '../pages/Mangas'
-import MangaForm from '../components/MangaForm'
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import Register from '../pages/Register';
+import MangaDetails from '../pages/MangaDetail';
+import SignIn from '../pages/Signin';
+import Mangas from '../pages/Mangas';
+import MangaForm from '../components/MangaForm';
+import { LS } from '../utils/localStorageUtils';
 
-//Protección de Regitro
-export const ProtectedRoute = () => {
+const ProtectedRoute = () => {
+  const token = LS.get('token');
 
-    const isLoggedIn = () => localStorage.getItem('token') && localStorage.getItem('user')
-    
-    if(isLoggedIn()){
+  const isLoggedIn = () => {
+    return token
+  };
 
-        return <Navigate to={'/NotAllow'} />
+  if (isLoggedIn()) {
+    return <Navigate to={'/NotAllow'} />;
+  }
 
-    }
-    return !isLoggedIn() && <Register />
-}
+  return <Register />;
+};
 
-//Protección de Login
-export const ProtectedSignIn = () => {
+const ProtectedSignIn = () => {
+  const token = LS.get('token');
 
-    const isLoggedIn = () => localStorage.getItem('token') && localStorage.getItem('user')
-    
-    if(isLoggedIn()){
+  const isLoggedIn = () => {
+    return token
+  };
 
-        return <Navigate to={'/NotAllow'} />
+  if (isLoggedIn()) {
+    return <Navigate to={'/NotAllow'} />;
+  }
 
-    }
-    return !isLoggedIn() && <SignIn />
-}
+  return <SignIn />;
+};
 
-//Protección de Mangas
-export function ProtectedRouteMangas(){
+const ProtectedRouteMangas = () => {
+  const token = LS.get('token');
 
-    const isLoggedIn = () => localStorage.getItem('token') && localStorage.getItem('user')
-    
-    if(!isLoggedIn()){
+  const isLoggedIn = () => {
+    return token
+  };
 
-        return <Navigate to={'/NotAllow'} />
+  if (!isLoggedIn()) {
+    return <Navigate to={'/NotAllow'} />;
+  }
 
-    }
-    return isLoggedIn() && <Mangas />
-}
+  return <Mangas />;
+};
 
-//Protección de Manga Details
-export function ProtectedRouteMangaDetail(){
+const ProtectedRouteMangaDetail = () => {
+  const token = LS.get('token');
 
-    const isLoggedIn = () => localStorage.getItem('token') && localStorage.getItem('user')
-    
-    if(!isLoggedIn()){
+  const isLoggedIn = () => {
+    return token
+  };
 
-        return <Navigate to={'/NotAllow'} />
+  if (!isLoggedIn()) {
+    return <Navigate to={'/NotAllow'} />;
+  }
 
-    }
-    return isLoggedIn() && <MangaDetails />
-}
+  return <MangaDetails />;
+};
 
-//Protección de New Manga
-export function ProtectedRouteNewManga(){
+const ProtectedRouteNewManga = () => {
+  const token = LS.get('token');
 
-    const isLoggedIn = () => localStorage.getItem('token') && localStorage.getItem('user')
-    
-    if(!isLoggedIn()){
+  const isLoggedIn = () => {
+    return token
+  };
 
-        return <Navigate to={'/NotAllow'} />
+  if (!isLoggedIn()) {
+    return <Navigate to={'/NotAllow'} />;
+  }
 
-    }
-    return isLoggedIn() && <MangaForm />
-}
+  return <MangaForm />;
+};
+
+export { ProtectedRoute, ProtectedSignIn, ProtectedRouteMangas, ProtectedRouteMangaDetail, ProtectedRouteNewManga };
