@@ -8,7 +8,9 @@ export default function Carousel() {
 
     useEffect(() => {
         axios.get("http://localhost:8080/api/categories")
-        .then(res => setCategories(res.data.response))
+        .then(res => {
+            setCategories(res.data.categories)
+        })
         .catch(err => console.log(err))
     }, [])
 
@@ -25,11 +27,11 @@ export default function Carousel() {
             <button className='button' onClick={prev}>
                 <Arrow icon = {left} />
             </button>
-            <img className='h-[120%] pb-[35px] max-w-[230px]' src={categories[counter]?.character_photo} />
-            <img className='h-[120%] pb-[35px] rounded-md max-w-[170px]' src={categories[counter]?.cover_photo} />
+            <img className='h-[120%] pb-[35px] max-w-[230px]' src={categories?.[counter]?.character_photo} />
+            <img className='h-[120%] pb-[35px] rounded-md max-w-[170px]' src={categories?.[counter]?.cover_photo} />
             <div className='flex flex-col w-[40%] gap-4 ms-3'>
-                <p className='font-medium text-[24px]'>{categories[counter]?.name}</p>
-                <p className='w-[90%] text-[14px]'>{categories[counter]?.description}</p>
+                <p className='font-medium text-[24px]'>{categories?.[counter]?.name}</p>
+                <p className='w-[90%] text-[14px]'>{categories?.[counter]?.description}</p>
             </div>
             <button className='button' onClick={next}>
                 <Arrow icon = {right}/>
