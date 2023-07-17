@@ -1,3 +1,6 @@
+import { createReducer } from "@reduxjs/toolkit";
+import { setMangas, setChapters, setPagination } from "../actions/manga.js";
+
 const initialState = {
   manga: {},
   chapters: [],
@@ -8,26 +11,29 @@ const initialState = {
   }
 }
 
-  const mangasReducer = (state = initialState, action) => {
-    switch (action.type) {
-      case 'SET_MANGA':
-        return {
+  const mangaReducer = createReducer(initialState, (builder) => { 
+    builder
+      .addCase(setMangas, (state, action) => {
+        const newState = {
           ...state,
-          manga: action.payload
-        };
-      case 'SET_CHAPTERS':
-        return {
-          ...state,
-          chapters: action.payload
+          manga : action.payload
         }
-        case 'SET_PAGINATION':
-        return {
+        return newState
+      })
+      .addCase(setChapters, (state, action) => {
+        const newState = {
           ...state,
-          pagination: action.payload
+          chapters : action.payload
         }
-      default:
-        return state
-    }
-  }
-  
-  export default mangasReducer
+        return newState
+      })
+      .addCase(setPagination, (state, action) => {
+        const newState = {
+          ...state,
+          pagination : action.payload
+        }
+        return newState
+      })
+  })
+
+export default mangaReducer

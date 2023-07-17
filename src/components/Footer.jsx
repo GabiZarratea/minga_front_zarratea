@@ -1,9 +1,13 @@
 import React from 'react'
 import {Link as Anchor} from 'react-router-dom'
+import { LS } from '../utils/localStorageUtils.js'
+
+const token = LS.get('token');
 
 export default function Footer() {
-
-  const isLoggedIn = () => localStorage.getItem('token') && localStorage.getItem('user')
+  const isLoggedIn = () => {
+    return token
+  }
 
   return (
     <footer className="h-[5vh] bg-white w-full">

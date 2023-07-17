@@ -1,21 +1,26 @@
-export const setManga = (manga) => {
-  return {
-    type: "SET_MANGA",
-    payload: manga,
-  };
-};
+import { createAction } from "@reduxjs/toolkit";
 
-export const setChapters = (chapters) => {
-  return {
-    type: "SET_CHAPTERS",
-    payload: chapters,
-  };
-};
-
-export const setPagination = (pagination) => {
-  console.log(pagination)
-  return {
-    type: "SET_PAGINATION",
-    payload: pagination,
-  };
-};
+export const setMangas = createAction(
+  'SET_MANGAS',
+  (manga) => {
+    return {
+      payload: manga
+    }
+  }
+)
+export const setChapters = createAction(
+  'SET_CHAPTERS',
+  (chapters) => {
+    return {
+      payload: chapters
+    }
+  }
+)
+export const setPagination = createAction(
+  'SET_PAGINATION',
+  (pagination) => {
+    return {
+      payload: pagination
+    }
+  }
+)

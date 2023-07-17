@@ -2,20 +2,27 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link as Anchor} from "react-router-dom";
 import { api } from "../utils/api";
-import { setManga, setChapters, setPagination } from "../redux/actions/manga.js";
+import { setMangas, setChapters, setPagination } from "../redux/actions/manga.js";
+import { LS } from '../utils/localStorageUtils.js'
 
 const MangaDetail = () => {
+  const token = LS.get('token');
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const { manga, chapters, pagination} = useSelector((state) => state.manga);
   const { prev, next } = pagination
   const mangaId = manga?._id
 
+  const [totalPages, setTotalPages] = useState(0)
+  const [totalChapters, setTotalChapters] = useState(0)
+  const [activeTab, setActiveTab] = useState("mangas")
+
   const fetchMangaDetail = async () => {
     if (manga._id !== id) {
       try {
-        const { data } = await api.get(`/mangas/${id}`);
-        dispatch(setManga(data.manga));
+        const { data } = await api.get(`/mangas/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+        dispatch(setMangas(data.manga));
       } catch (error) {
         console.log(error);
       }
@@ -24,41 +31,26 @@ const MangaDetail = () => {
 
   const fetchChapters = async (page) => {
     try {
-      const { data } = await api.get(`/chapters?page=${page}&manga_id=${id}`);
+      const { data } = await api.get(`/chapters?page=${page}&manga_id=${id}`, { headers: { Authorization: `Bearer ${token}` } });
       dispatch(setChapters(data.chapters));
       setTotalPages(data.totalPages)
+      setTotalChapters(data.totalChapters)
     } catch (error) {
       console.log(error);
     }
   }; 
 
-  useEffect(() => {
-    fetchMangaDetail();
-    fetchChapters(pagination.currentPage);
-  }, [pagination]);
-
-
   const handlePrevPage = async () => {
     if(pagination.currentPage > 1){
       dispatch(setPagination({currentPage: pagination.currentPage -1, prev: true, next: true}))
     }
-    else if(pagination.currentPage == 2){
-      dispatch(setPagination({currentPage: pagination.currentPage -1, prev: false, next: true}))
-    } 
   }
-  console.log(pagination.currentPage)
-  console.log(pagination.prev)
-  console.log(pagination.next)
-  
+
   const handleNextPage = async () => {
-    console.log(pagination)
+    if(pagination.currentPage < totalPages){
       dispatch(setPagination({currentPage: pagination.currentPage +1, prev: true, next: true}))
+    }
   }
-
-
-  const [activeTab, setActiveTab] = useState("mangas")
-
-  const [totalPages, setTotalPages] = useState(0)
 
   const switchToMangaTab = () => {
     setActiveTab("mangas");
@@ -68,13 +60,21 @@ const MangaDetail = () => {
     setActiveTab("chapters");
   };
 
-  const company_name = (manga.author_id?.name + " " + manga.author_id?.last_name)
+  const company_name =(manga.author_id?.name ? ` ${manga.author_id.name}` : '') + ' ' + (manga.author_id?.last_name ? ` ${manga.author_id.last_name}` : '');
+  
+  useEffect(() => {
+    fetchMangaDetail();
+  },[])
+
+  useEffect(() => {
+    fetchChapters(pagination.currentPage);
+  }, [pagination]);
 
   return (
     <div className='bg-slate-200 min-h-[screen] flex flex-col items-center w-full'>
         <div className='mt-[25%] sm:mt-[120px] flex flex-col items-center w-full'>
             <img src={manga.cover_photo} alt="manga cover" className='rounded-[10px] w-[80%] sm:w-[60%] h-[250px] object-cover object-top' />
-            { activeTab === "mangas" && (
+            {activeTab === "mangas" && (
                 <div className='flex flex-col items-center w-[full] sm:w-[60%]'>
                   <p className='m-4 text-[color:var(--black,#222)] text-2xl not-italic leading-[95.187%]'>{manga.title}</p>
             
@@ -97,7 +97,7 @@ const MangaDetail = () => {
                       </div>
                       <p className='text-[color:var(--secondary-gray,#9D9D9D)] text-center text-2xl not-italic font-extralight leading-[normal]'>|</p>
                       <div className='flex flex-col'>
-                          <p className='text-[color:var(--primary-black,#424242)] text-center text-xl not-italic font-normal leading-[normal]'>265</p>
+                          <p className='text-[color:var(--primary-black,#424242)] text-center text-xl not-italic font-normal leading-[normal]'>{totalChapters}</p>
                           <p className='text-[color:var(--secondary-gray,#9D9D9D)] text-center text-xs not-italic font-normal leading-[normal]'>Chapters</p>
                       </div>
                       <p className='text-[color:var(--secondary-gray,#9D9D9D)] text-center text-2xl not-italic font-extralight leading-[normal]'>|</p>
@@ -117,19 +117,19 @@ const MangaDetail = () => {
                 </div>
               )
             }
-            { activeTab === "chapters" && (
-                <div className='sm:mt-[120px] sm:w-[60%] flex flex-col items-center w-[90%] mb-12'>
+            {activeTab === "chapters" && (
+                <div className='sm:w-[60%] flex flex-col items-center w-[90%] mb-12'>
                   <p className="m-4 text-[color:var(--black,#222)] text-2xl not-italic leading-[95.187%]">Chapters</p>
                   <div className='w-[90%] h-[40px] shrink-0 flex items-center m-4 shadow-[0px_0px_7px_0px_rgba(0,0,0,0.15)] rounded-[20px]'>
                       <Anchor onClick={switchToMangaTab} className='flex w-[50%] h-[34px] flex-col justify-center items-center shrink-0 text-[color:var(--secondary-gray,#9D9D9D)] text-center text-md not-italic font-normal leading-[normal]'>Manga</Anchor>
                       <Anchor onClick={switchToChaptersTab} className='w-[50%] h-[34.311px] shrink-0 rounded-[20px] bg-orange-500 text-[color:var(--white,#FFF)] text-center text-md not-italic font-normal leading-[normal] flex flex-col justify-center'>Chapters</Anchor>
                   </div>
                   {chapters.map((chapter) => (
-                    <div key={chapter.id} className="flex w-[90%] justify-between items-center m-3">
+                    <div key={chapter._id} className="flex w-[90%] justify-between items-center m-3">
                       <img src={chapter.cover_photo} className="w-[25%] h-[80px] md:h-[150px] object-cover" />
                       <p className="text-black w-[45%] text-center text-xl not-italic leading-[95.187%] font-medium">{chapter.title}</p>
-                      <div className="flex w-[25%] h-12 flex-col justify-center shrink-0 bg-[color:var(--primary-two-design,#F97316)] rounded-[25px]">
-                        <Anchor className="text-[#FAFCFC] text-center text-md not-italic font-bold leading-[normal] tracking-[0.7px]">Read</Anchor>
+                      <div className="flex w-[25%] h-12 flex-col justify-center shrink-0 bg-[color:var(--primary-two-design,#F97316)] rounded-[25px] hover:bg-orange-800 ">
+                        <Anchor to={`/Chapter/${chapter._id}/1`} className="text-[#FAFCFC] text-center text-md not-italic font-bold leading-[normal] tracking-[0.7px">Read</Anchor>
                       </div>
                       
                     </div>
