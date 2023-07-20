@@ -2,11 +2,13 @@
 import NavBar from "../components/NavBar"
 import Footer from "../components/Footer"
 
-export default function Main({ children }){
+import { Outlet } from "react-router-dom"
+
+export default function Main(){
     return (
-        <div className="shrink-0 bg-cover bg-center bg-no-repeat bg-[url('/background-1.png')] md:bg-[url('/background-1-web.png')] flex flex-col min-h-screen w-full justify-between items-center">
+        <div className="shrink-0 flex flex-col min-h-screen w-full justify-between items-center">
             <NavBar />
-            { children }
+                <Outlet />
             <Footer />
         </div>
     )
