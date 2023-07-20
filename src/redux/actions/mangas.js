@@ -1,8 +1,31 @@
 import { createAction } from "@reduxjs/toolkit";
 
-export const setFilters = createAction("mangas/setFilters");
-export const setCategories = createAction("mangas/setCategories");
-export const setMangas = createAction("mangas/setMangas");
-export const setPagination = createAction("mangas/setPagination");
-export const captureText = createAction("mangas/captureText");
-export const captureChecks = createAction("mangas/captureChecks");
+export const setFilters = createAction("mangas/setFilters", (filters) => {
+    return{
+        payload: filters,
+    }
+}
+);
+
+
+export const setCategories = createAction("mangas/setCategories", (categories) => {
+    return{
+        payload: categories,
+    
+}
+});
+
+
+export const setMangas = createAction("mangas/setMangas", (mangas) => {
+    return{
+        payload: mangas,
+    }
+}
+);
+
+export const setPagination = createAction("mangas/setPagination", (pagination) => {
+    return{
+        payload: pagination,
+    }
+}
+);

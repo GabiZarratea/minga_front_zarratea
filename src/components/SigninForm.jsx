@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { setToken, setUser, setPhoto } from '../redux/actions/auth.js';
+import { setUser, setPhoto } from '../redux/actions/auth.js';
 import { api, apiUrl, endpoints } from '../utils/api';
 import Swal from 'sweetalert2';
 import { Link as Anchor, useNavigate } from 'react-router-dom';

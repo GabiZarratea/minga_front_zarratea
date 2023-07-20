@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { LS } from "../utils/localStorageUtils";
 
 export default function MangaForm() {
   const [selectedOption, setSelectedOption] = useState("Select category");
@@ -21,7 +22,7 @@ export default function MangaForm() {
       author_id: "1",
     };
     
-    let token = localStorage.getItem("token");
+    let token = LS.get('token')
     let configs = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -57,7 +58,7 @@ export default function MangaForm() {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:8080/api/categories").then((res) => setCategories(res.data.response));
+    axios.get("http://localhost:8080/api/categories").then((res) => setCategories(res.data.categories));
   }, [reloadComponent]);
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setToken, setUser, setPhoto } from '../redux/actions/auth.js';
+import { setUser, setPhoto } from '../redux/actions/auth.js';
 import { api, apiUrl, endpoints } from '../utils/api';
 import Swal from 'sweetalert2';
 import { Link as Anchor, useNavigate } from 'react-router-dom';
@@ -81,7 +81,7 @@ function NavBar() {
                 <div className="flex flex-row items-center text-center lg:justify-between sm:w-[400px] w-full">
                   <img src={photo} className="w-[35px] sm:w-[50px] mb-2 sm:m-0 rounded-full" alt="User" />
                   <div className="flex flex-col ms-3">
-                    <p className="text-[14px] sm:text-[16px]">{user}</p>
+                    <p className="text-[14px] sm:text-[16px]">{user.email}</p>
                   </div>
                   <img src="/filled.png" onClick={() => setDisplay(!display)} className="block ms-[20%] w-[24px] h-[24px]" alt="Close" />
                 </div>

@@ -23,14 +23,8 @@ const Mangas = () => {
 
   const getMangas = async () => {
     try {
-      const { data } = await api.get(apiUrl + endpoints.read_mangas,{
-        headers: { Authorization: `Bearer ${token}` }}, {
-        params: {
-          title: title.trim(),
-          category: categoriesSelected.join(","),
-          page: page,
-        },
-      });
+      const { data } = await api.get(apiUrl + endpoints.read_mangas+ `?title=${title}&category=${categoriesSelected}&page=${page}`, {
+        headers: { Authorization: `Bearer ${token}` }},);
 
       dispatch(setMangas(data.mangas));
       dispatch(setPagination(data.pagination));
