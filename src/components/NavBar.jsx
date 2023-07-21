@@ -54,7 +54,6 @@ function NavBar() {
         const response = await api.get(apiUrl + endpoints.signintoken, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log(response)
         const { user, photo } = response.data.response;
 
         dispatch(setUser(user));
