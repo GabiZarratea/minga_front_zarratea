@@ -7,7 +7,7 @@ import Mangas from "../pages/Mangas";
 import MangaForm from "../components/MangaForm";
 import Chapter from "../pages/chapter";
 import { LS } from "../utils/localStorageUtils";
-
+import MyMangas from "../pages/MyMangas";
 const ProtectedRoute = () => {
   const token = LS.get("token");
 
@@ -86,5 +86,18 @@ const ProtectedReadManga = () => {
   }
   return isLoggedIn() && <Chapter />;
 };
+const ProtectedRouteMangaEdit = () => {
+  const role = LS.get("role");
 
-export { ProtectedRoute, ProtectedSignIn, ProtectedRouteMangas, ProtectedRouteMangaDetail, ProtectedRouteNewManga, ProtectedReadManga };
+  const roleApproved = () => {
+    return role === 1 || role === 2;
+  };
+
+  if (!roleApproved()) {
+    return <Navigate to={"/NotAllow"} />;
+  }
+
+  return <MyMangas />;
+};
+
+export { ProtectedRoute, ProtectedSignIn, ProtectedRouteMangas, ProtectedRouteMangaDetail, ProtectedRouteNewManga, ProtectedReadManga, ProtectedRouteMangaEdit };

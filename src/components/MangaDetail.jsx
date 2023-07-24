@@ -61,9 +61,6 @@ const MangaDetail = () => {
   const toReadChapter = (chapter) => {
     // dispatch(mangaIdAction({ mangaId: chapter.manga_id }));
     localStorage.setItem("mangaId", chapter.manga_id);
-    // console.log(chapter, "zzzzzzzzzzzzzzzzzzzzzzz");
-    // console.log(chapterAction, "yyyyyyyyyyyyyyyyyyyyyyyyyy");
-
     if (chapterAction.title === chapter.title) {
       console.log(chapterAction.number, "pesado");
       navigate(`/Chapter/${chapter._id}/${chapterAction.number}`);

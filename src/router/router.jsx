@@ -4,11 +4,13 @@ import Main from "../layouts/Main";
 import SignIn from "../pages/Signin";
 import Index from "../pages/Index";
 import Welcome from "../pages/NotAllow";
-import { ProtectedRoute, ProtectedSignIn, ProtectedRouteMangaDetail, ProtectedRouteMangas, ProtectedReadManga } from "./ProtectedRoute";
+import { ProtectedRoute, ProtectedSignIn, ProtectedRouteMangaDetail, ProtectedRouteMangas, ProtectedReadManga, ProtectedRouteMangaEdit } from "./ProtectedRoute";
 import FormManga from "../pages/Manga-Form";
 import Mangas from "../pages/Mangas";
 import MangaDetail from "../pages/MangaDetail";
 import Chapter from "../pages/chapter";
+import MyMangas from "../pages/MyMangas";
+// import MyMangas from "../pages/MyMangas";
 
 const router = createBrowserRouter([
   {
@@ -67,6 +69,15 @@ const router = createBrowserRouter([
           <ProtectedReadManga>
             <Chapter />
           </ProtectedReadManga>
+        ),
+      },
+      {
+        path: "/MyMangas",
+
+        element: (
+          <ProtectedRouteMangaEdit>
+            <MyMangas />
+          </ProtectedRouteMangaEdit>
         ),
       },
     ],

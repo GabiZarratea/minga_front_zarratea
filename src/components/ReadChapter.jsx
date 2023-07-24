@@ -7,12 +7,12 @@ import { chapterDataAction } from "../redux/actions/chapters";
 import { LS } from "../utils/localStorageUtils";
 
 export default function ReadChapter() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const chapterAction = useSelector((store) => store.chapter);
+  const dispatch = useDispatch(); //hook despacha acciones a reducers
+  const navigate = useNavigate(); //fn navega entre distintas rutas de la app sin recargar toda la pag
+  const chapterAction = useSelector((store) => store.chapter); //useSelector accede al estado almacenado en el store global de la app, chapter es una prop de estado que busca
   console.log(chapterAction); //info guardada de manera global usando redux
   const [nextChapter, setNextChapter] = useState("");
-  const { id, page } = useParams();
+  const { id, page } = useParams(); //
   const [pages, setPages] = useState([]);
   const [mangaId, setMangaId] = useState(localStorage.getItem("mangaId"));
   const [title, setTitle] = useState("");
@@ -25,9 +25,10 @@ export default function ReadChapter() {
   };
   // console.log(mangaId, "MANGAID");
   useEffect(() => {
-    axios(apiUrl + `api/chapters/${id}?manga_id=${mangaId}`, configs)
+    //se ejecuta al cargar el componenete y al cambiar los valores de id y page
+    axios(apiUrl + `api/chapters/${id}?manga_id=${mangaId}`, configs) //construye la url usando la va apiUrl y se agregan valores como parametros
       .then((res) => {
-        // console.log(res, "reeeees");
+        // console.log(res, "res axios");
         setPages(res.data.chapter.pages);
         setTitle(res.data.chapter.title);
         setNextChapter(res.data.nextChapter);
@@ -41,6 +42,7 @@ export default function ReadChapter() {
 
   const PreviousPage = () => {
     if (Number(page) === 1) {
+      // si el numero de pagina es 1 vuelve al manga que pertenece el chapter
       navigate(`/manga/${mangaId}`);
     } else {
       navigate(`/Chapter/${id}/${Number(page) - 1}`);
@@ -48,11 +50,12 @@ export default function ReadChapter() {
   };
 
   const NextPage = () => {
-    console.log(nextChapter, "tubieja");
+    console.log(nextChapter);
     if (Number(page) < pages.length - 1) {
-      navigate(`/Chapter/${id}/${Number(page) + 1}`);
+      //si el numero de paginas es menor al length del arreglo de paginas
+      navigate(`/Chapter/${id}/${Number(page) + 1}`); //pasa a la siguiente
     } else if (nextChapter) {
-      navigate(`/Chapter/${nextChapter}/1`);
+      navigate(`/Chapter/${nextChapter}/1`); // si no pasa al siguiente chapter
     } else {
       navigate(`/manga/${mangaId}`);
     }

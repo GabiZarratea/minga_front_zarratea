@@ -29,7 +29,7 @@ export default function SigninForm() {
 
     try {
       const response = await api.post(apiUrl + endpoints.signin, data);
-      console.log(response);
+      console.log(response, "responseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeasdasdadssad");
       if (response.data.success) {
         Swal.fire({
           position: "center",
@@ -39,9 +39,10 @@ export default function SigninForm() {
           timer: 1500,
         });
 
-        const { user, photo, token } = response.data.response;
+        const { user, photo, token, role } = response.data.response; //agrega role
 
         LS.add("token", token);
+        LS.add("role", role);
         dispatch(setUser(user));
         dispatch(setPhoto(photo));
 

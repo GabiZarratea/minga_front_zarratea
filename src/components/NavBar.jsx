@@ -124,6 +124,11 @@ function NavBar() {
                     Mangas
                   </Anchor>
                 ) : null}
+                {isLoggedIn() ? (
+                  <Anchor to={"/MyMangas"} className="p-3 text-lg hover:bg-white hover:text-orange-600 rounded-md w-[300px]">
+                    My mangas
+                  </Anchor>
+                ) : null}
                 {isLoggedIn() ? <Anchor className="p-3 text-lg hover:bg-white hover:text-orange-600 rounded-md w-[300px]">My Comics</Anchor> : null}
                 {isLoggedIn() ? <Anchor className="p-3 text-lg hover:bg-white hover:text-orange-600 rounded-md w-[300px]">Favorites</Anchor> : null}
                 {isLoggedIn() ? (
