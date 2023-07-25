@@ -8,5 +8,6 @@ export const endpoints = {
     signout: "auth/signout",
     read_mangas: "mangas",
     read_categories: "categories",
-    chapters: "chapters"
+    chapters: "chapters",
+    verify: "auth/verify/"
 }

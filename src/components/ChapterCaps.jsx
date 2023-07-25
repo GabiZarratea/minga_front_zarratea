@@ -11,8 +11,9 @@ const ChapterCaps = ({chapter}) => {
     const dispatch = useDispatch()
     const [showModal, setShowModal] = useState(false)
     const { read_comments, post_comments, setPaginationComments } = commentActions
-
     const { pagination } = useSelector((state) => state.comments)
+
+    const [commentText, setCommentText] = useState("")
 
 const handleShowModal = (chapterId) => {
 
@@ -42,8 +43,10 @@ const handlePrevPageComments = async () => {
   }
 
 const handleCommentSubmit =  (chapterId) => {
-        let datos = { text: text.current.value }
+        let datos = { text: commentText }
         dispatch(post_comments({chapterId, datos}))
+        setCommentText("")
+
 }
 
 return (
@@ -68,7 +71,7 @@ return (
 
                     {/* Formulario para enviar un nuevo comentario */}
                     <div className="flex w-[386px] justify-between items-center shrink-0 self-stretch px-5 py-0 rounded-[10px] mt-4">
-                        <input type="text" ref={text} placeholder="Say something here..." className="w-full p-2 border rounded" rows={1} />
+                        <input type="text" value={commentText} onChange={(e) => setCommentText(e.target.value)} placeholder="Say something here..." className="w-full p-2 border rounded" rows={1} />
                         <button>
                             <img src="/paper-airplane.png" className="h-10" onClick={() => handleCommentSubmit(chapter._id)} />
                         </button>

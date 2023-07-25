@@ -1,26 +1,24 @@
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
+import GoogleLogin from 'react-google-login'
 import { apiUrl, endpoints } from "../utils/api.js"
 import { Link as Anchor , useNavigate } from "react-router-dom"
 import axios from "axios"
 import Swal from "sweetalert2"
+import { gapi } from "gapi-script"
 
 export default function Register() {
 
+  const clientId = "393235807340-092f45s1qiasssao75ceoq4br58rgkpr.apps.googleusercontent.com"
+
+  const [verificationSuccess, setVerificationSuccess] = useState(false)
+  
   let navigate = useNavigate()
 
   let email = useRef("")
   let photo = useRef("")
   let password = useRef("")
 
-  function alertSoon(){
-    Swal.fire({
-      text: 'We are having problems, this option is available soon!',
-      width: 600,
-      padding: '3em'
-    })
-  }
-
-  async function handleFormSubmit(event){
+  function handleFormSubmit(event){
     
     event.preventDefault()
 
@@ -50,6 +48,54 @@ export default function Register() {
         text: err || 'This email is already registered'
       })
     })
+  }
+
+  useEffect(() => {
+    gapi.load("client:auth2", ()=> {
+      gapi.auth2.init({ clientId: clientId })
+    })
+  }, [])
+
+  const responseSuccess = (res) => {
+    let data = {
+      email: res.profileObj.email,
+      photo: res.profileObj.imageUrl,
+      password: res.profileObj.googleId
+    }
+
+    axios.post(apiUrl + endpoints.register, data)
+      .then(res => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'New user creation successful!',
+          showConfirmButton: false,
+          timer: 1500
+      })
+      setVerificationSuccess(true)
+      navigate('/verifyAccount')
+      })
+      .catch(error => {
+      const err = error.response.data.messages
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: err || 'This email is already registered'
+      })
+    })
+  }
+
+  const responseGoogle = (res) => {
+    if (res.error === "popup_closed_by_user") {
+      // Mostrar una notificación o mensaje al usuario informando que el inicio de sesión fue cancelado.
+      Swal.fire({
+        icon: "info",
+        title: "Login canceled",
+        text: "The login process with Google was canceled by the user.",
+      });
+    } else {
+      console.log("Failed to sign in with Google:", res.error);
+    }
   }
 
     return (
@@ -82,10 +128,15 @@ export default function Register() {
                 <div className="flex w-[70vw] md:w-[30vw] h-12 flex-col justify-center shrink-0 bg-[color:var(--primary-two-design,#F97316)] rounded-[10px]">
                   <Anchor onClick={handleFormSubmit} className="text-[#FAFCFC] text-center text-sm not-italic font-bold leading-[normal] tracking-[0.7px]">Sign Up</Anchor>
                 </div>
-                <div className="w-[70vw] md:w-[30vw] h-12 shrink-0 border rounded-[10px] border-solid border-[#1F1F1F] flex justify-center items-center">
-                  <img src="/google.png" className="w-6 h-6 shrink-0" />
-                  <Anchor onClick={alertSoon} className="ms-2 text-[#1F1F1F] text-center text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">Sign in with Google</Anchor>
-                </div>
+                <GoogleLogin
+                  className='w-[70%] md:w-[60%] flex justify-center'
+                  clientId={clientId}
+                  buttonText="Sign up with Google"
+                  onSuccess={responseSuccess}
+                  onFailure={responseGoogle}
+                  cookiePolicy={'single_host_origin'}
+                />
+                {verificationSuccess}
                 <p className="text-[#1F1F1F] text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">Already have an account? <Anchor to={'/signin'} className="text-[color:var(--primary-two-design,#F97316)]">Log in</Anchor></p>
                 <p className="text-[#1F1F1F] text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">Go back to <Anchor to={'/'} className="text-[color:var(--primary-two-design,#F97316)]">home page</Anchor></p>
               </div>
@@ -94,5 +145,5 @@ export default function Register() {
           <div className="hidden md:flex md:w-1/2 xl:w-2/3 2xl:w-3/4 h-full bg-cover bg-[url('/fondoForm.png')]"></div>
         </div>
       </>
-    );
-  }
+    )
+}

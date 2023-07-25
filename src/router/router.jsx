@@ -8,6 +8,7 @@ import { ProtectedRoute, ProtectedSignIn, ProtectedRouteMangaDetail, ProtectedRo
 import FormManga from "../pages/Manga-Form";
 import Mangas from "../pages/Mangas";
 import MangaDetail from "../pages/MangaDetail";
+import VerifyCode from "../components/verifyCode";
 
 
 
@@ -57,9 +58,15 @@ const router = createBrowserRouter([
                 )
             },
             {
+                path:'/verifyAccount',
+                element: (
+                    <VerifyCode />
+                )
+            },
+            {
                 path: "/manga-form",
                 element: <FormManga />,
-              }
+            }
         ]
     }
 ])
