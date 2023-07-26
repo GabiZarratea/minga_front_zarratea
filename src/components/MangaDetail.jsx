@@ -1,42 +1,44 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams, Link as Anchor} from "react-router-dom";
-import { api } from "../utils/api";
-import { setMangas, setChapters, setPagination } from "../redux/actions/manga.js";
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useParams, Link as Anchor} from "react-router-dom"
+import { api } from "../utils/api"
+import { setMangas, setChapters, setPagination } from "../redux/actions/manga.js"
 import { LS } from '../utils/localStorageUtils.js'
+import ChapterCaps from "./ChapterCaps"
+
 
 const MangaDetail = () => {
-  const token = LS.get('token');
+  const token = LS.get('token')
 
-  const { id } = useParams();
-  const dispatch = useDispatch();
-  const { manga, chapters, pagination} = useSelector((state) => state.manga);
-  const { prev, next } = pagination
-  const mangaId = manga?._id
-
+  const { id } = useParams()
+  const dispatch = useDispatch()
+  const { manga, chapters, pagination} = useSelector((state) => state.manga)
   const [totalPages, setTotalPages] = useState(0)
   const [totalChapters, setTotalChapters] = useState(0)
   const [activeTab, setActiveTab] = useState("mangas")
 
+  const company_name =(manga.author_id?.name ? ` ${manga.author_id.name}` : '') + ' ' + (manga.author_id?.last_name ? ` ${manga.author_id.last_name}` : '')
+
+
   const fetchMangaDetail = async () => {
     if (manga._id !== id) {
       try {
-        const { data } = await api.get(`/mangas/${id}`, { headers: { Authorization: `Bearer ${token}` } });
-        dispatch(setMangas(data.manga));
+        const { data } = await api.get(`/mangas/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+        dispatch(setMangas(data.manga))
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     }
   }
 
   const fetchChapters = async (page) => {
     try {
-      const { data } = await api.get(`/chapters?page=${page}&manga_id=${id}`, { headers: { Authorization: `Bearer ${token}` } });
-      dispatch(setChapters(data.chapters));
+      const { data } = await api.get(`/chapters?page=${page}&manga_id=${id}`, { headers: { Authorization: `Bearer ${token}` } })
+      dispatch(setChapters(data.chapters))
       setTotalPages(data.totalPages)
       setTotalChapters(data.totalChapters)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   }; 
 
@@ -53,22 +55,20 @@ const MangaDetail = () => {
   }
 
   const switchToMangaTab = () => {
-    setActiveTab("mangas");
+    setActiveTab("mangas")
   };
 
   const switchToChaptersTab = () => {
-    setActiveTab("chapters");
-  };
-
-  const company_name =(manga.author_id?.name ? ` ${manga.author_id.name}` : '') + ' ' + (manga.author_id?.last_name ? ` ${manga.author_id.last_name}` : '');
+    setActiveTab("chapters")
+  }
   
   useEffect(() => {
-    fetchMangaDetail();
+    fetchMangaDetail()
   },[])
 
   useEffect(() => {
-    fetchChapters(pagination.currentPage);
-  }, [pagination]);
+    fetchChapters(pagination.currentPage)
+  }, [pagination])
 
   return (
     <div className='bg-slate-200 min-h-[screen] flex flex-col items-center w-full'>
@@ -125,14 +125,7 @@ const MangaDetail = () => {
                       <Anchor onClick={switchToChaptersTab} className='w-[50%] h-[34.311px] shrink-0 rounded-[20px] bg-orange-500 text-[color:var(--white,#FFF)] text-center text-md not-italic font-normal leading-[normal] flex flex-col justify-center'>Chapters</Anchor>
                   </div>
                   {chapters.map((chapter) => (
-                    <div key={chapter._id} className="flex w-[90%] justify-between items-center m-3">
-                      <img src={chapter.cover_photo} className="w-[25%] h-[80px] md:h-[150px] object-cover" />
-                      <p className="text-black w-[45%] text-center text-xl not-italic leading-[95.187%] font-medium">{chapter.title}</p>
-                      <div className="flex w-[25%] h-12 flex-col justify-center shrink-0 bg-[color:var(--primary-two-design,#F97316)] rounded-[25px] hover:bg-orange-800 ">
-                        <Anchor to={`/Chapter/${chapter._id}/1`} className="text-[#FAFCFC] text-center text-md not-italic font-bold leading-[normal] tracking-[0.7px">Read</Anchor>
-                      </div>
-                      
-                    </div>
+                    <ChapterCaps key={chapter._id} chapter={chapter} />
                   ))}
                   <div className="flex flex-wrap justify-center mt-4">
                     <button onClick={handlePrevPage} disabled={pagination.currentPage == 1} className={`px-4 py-2 mr-2 rounded-md ${pagination.currentPage == 1 ? 'bg-slate-50' : 'bg-orange-400' }`}> Prev </button>
@@ -143,7 +136,6 @@ const MangaDetail = () => {
             }
         </div>
     </div>
-  );
-};
-
-export default MangaDetail;
+  )
+}
+export default MangaDetail

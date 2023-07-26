@@ -1,18 +1,11 @@
 import React, { useRef } from 'react';
+import GoogleLogin from 'react-google-login';
 import { useDispatch } from 'react-redux';
 import { setToken, setUser, setPhoto } from '../redux/actions/auth.js';
 import { api, apiUrl, endpoints } from '../utils/api';
 import Swal from 'sweetalert2';
 import { Link as Anchor, useNavigate } from 'react-router-dom';
 import { LS } from '../utils/localStorageUtils.js';
-
-function alertSoon() {
-  Swal.fire({
-    text: 'We are having problems, this option is available soon!',
-    width: 600,
-    padding: '3em',
-  });
-}
 
 export default function SigninForm() {
   const dispatch = useDispatch();
@@ -62,6 +55,68 @@ export default function SigninForm() {
     }
   };
 
+  const responseSuccess = (res) => {
+    let data = {
+      email: res.profileObj.email,
+      password: res.profileObj.googleId
+    }
+
+    const signInWithGoogle = async () => {
+      try {
+        const response = await api.post(apiUrl + endpoints.signin, data);
+        console.log(response);
+        if (response.data.success) {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'User signed in!',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+  
+          const { user, photo, token } = response.data.response;
+  
+          LS.add('token', token);
+  
+          dispatch(setUser(user));
+          dispatch(setPhoto(photo));
+  
+          navigate('/');
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Authentication failed!',
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Authentication failed!',
+        });
+      }
+    };
+  
+    signInWithGoogle();
+  }
+
+  const responseGoogle = (res) => {
+    if(res?.tokenId){
+      responseSuccess(res)
+    }
+    if (res.error === "popup_closed_by_user") {
+      // Mostrar una notificación o mensaje al usuario informando que el inicio de sesión fue cancelado.
+      Swal.fire({
+        icon: "info",
+        title: "Login canceled",
+        text: "The login process with Google was canceled by the user.",
+      });
+    } else {
+      console.log("Failed to sign in with Google:", res.error);
+    }
+  }
+
   return (
     <div className="flex flex-wrap flex-col justify-center items-center w-[100%] lg:w-[50%]">
       <p className="text-[#1F1F1F] text-center text-[32px] not-italic font-semibold leading-[normal] tracking-[1.6px]">
@@ -110,12 +165,14 @@ export default function SigninForm() {
               Sign In
             </a>
           </button>
-          <button className="w-[70vw] md:w-[30vw] h-12 shrink-0 border rounded-[10px] border-solid border-[#1F1F1F] flex justify-center items-center">
-            <img src="/google.png" className="w-6 h-6 shrink-0" alt="Google" />
-            <Anchor onClick={alertSoon} className="ms-2 text-[#1F1F1F] text-center text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">
-              Sign in with Google
-            </Anchor>
-          </button>
+          <GoogleLogin
+            className='w-[70%] md:w-[60%] flex justify-center'
+            clientId="393235807340-092f45s1qiasssao75ceoq4br58rgkpr.apps.googleusercontent.com"
+            buttonText="Sign in with Google"
+            onSuccess={responseSuccess}
+            onFailure={responseGoogle}
+            cookiePolicy={'single_host_origin'}
+          />
           <p className="text-[#1F1F1F] text-sm not-italic font-medium leading-[normal] tracking-[0.7px]">
             Already have an account? <Anchor to={'/register'} className="text-[color:var(--primary-two-design,#F97316)]">Sign Up</Anchor>
           </p>
