@@ -68,7 +68,7 @@ const MangaDetail = () => {
       navigate(`/Chapter/${chapter._id}/1`);
     }
   };
-  const company_name = (manga.author_id?.name ? ` ${manga.author_id.name}` : "") + " " + (manga.author_id?.last_name ? ` ${manga.author_id.last_name}` : "");
+  // const company_name = (manga.author_id?.name ? ` ${manga.author_id.name}` : "") + " " + (manga.author_id?.last_name ? ` ${manga.author_id.last_name}` : "");
 
   useEffect(() => {
     fetchMangaDetail();

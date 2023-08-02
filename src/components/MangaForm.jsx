@@ -1,135 +1,125 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { api, apiUrl, endpoints } from "../utils/api.js";
+import { Link as Anchor, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Navigate } from "react-router-dom";
+import { LS } from "../utils/localStorageUtils";
 
 export default function MangaForm() {
-  const [selectedOption, setSelectedOption] = useState(""); // hook react usestate fn setSO actualiz el valor de selectedO
+  const title = useRef("");
+  const selectedOption = useRef(""); // Store the category_id here
+  const cover_photo = useRef("");
+  const description = useRef("");
+  const error = useRef([]);
+  const token = LS.get("token");
+
   const [categories, setCategories] = useState([]);
-  const [mangaTitle, setMangaTitle] = useState("");
-  const [coverPhoto, setCoverPhoto] = useState("");
-  const [mangaDescription, setMangaDescription] = useState("");
-  const [error, setError] = useState([]);
-  // state forza recarga del componente después de la creación de una manga
-  const [reloadComponent, setReloadComponent] = useState(false);
 
   // controlador se ejecuta al enviar el formulario
-  const handleFormSubmit = (event) => {
-    event.preventDefault(); //evita el comportamiento predeterminado que es recargar la pag
-    let selectedCategory = categories.filter((e) => e.name === selectedOption); // USRAR FIND // filtra la categoria que tenga el mismo nombre que la seleccionada para encontrar el id para el backend
-    console.log(selectedCategory, "selectedCategory._id");
-    const data = {
-      title: mangaTitle,
-      cover_photo: coverPhoto,
-      description: mangaDescription,
-      category_id: selectedCategory[0]._id,
-      author_id: "6499d58000aa9b334218f2e6", //middleware haspermission tiene que agregar el ID
-    };
-    console.log(data, "dataa");
-    setMangaTitle("");
-    setCoverPhoto(coverPhoto); // ARREGLAR CON USEREF
-    setMangaDescription("");
+  async function handleFormSubmit(event) {
+    event.preventDefault();
 
-    // console.log(selectedOption, "asdasdaasdasdadsdasdsa");
+    let selectedCategory = categories.find((e) => e.name === selectedOption.current.value);
+
+    const formData = new FormData();
+    formData.append("title", title.current.value);
+    formData.append("category_id", selectedCategory._id); // Use the stored category_id here
+    formData.append("cover_photo", cover_photo.current.files[0]);
+    formData.append("description", description.current.value);
+    formData.append("author_id", "6499d58000aa9b334218f2e6");
+
+    // Clear input fields after form submission
+    title.current.value = "";
+    cover_photo.current.value = "";
+    description.current.value = "";
 
     // toma el token metodo getItem del localStorage
-    let token = localStorage.getItem("token");
-    // let user = localStorage.getItem("user");
+    // let token = localStorage.getItem("token");
 
     let configs = {
       headers: {
-        Authorization: `Bearer ${token}`, // esquema de autenticacion http indica que se esta ussando un token de acceso
+        Authorization: `Bearer ${token}`,
       },
     };
 
-    axios //bilioteca axios solicitud http post url server backend
-      .post("http://localhost:8080/api/mangas/", data, configs)
-      .then((res) => {
-        console.log(res);
+    try {
+      console.log(formData, "formdataaaaaaaaaaaaaaaaaaaaaaa");
 
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "New manga creation successful",
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          setReloadComponent(true);
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        if (error.response.data.message === "Manga already exists") {
-          return Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Manga already exists!",
-          });
-        }
-        setError(error.response.data.message); //set todos los errores que manda el middleware validator para usarlo como span
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
-        });
+      const res = await axios.post(apiUrl + endpoints.read_mangas, formData, configs);
+      console.log(res);
+
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "New manga creation successful",
+        showConfirmButton: false,
+        timer: 1500,
       });
-  };
 
-  const handleOptionChange = (event) => {
-    //controlador de eventos, cuando cambia la opcion seleccionada
-    setSelectedOption(event.target.value);
-  };
-
-  useEffect(() => {
-    // trae todas las categorias para comparar con la seleccionada y obtener el id
-    axios.get("http://localhost:8080/api/categories").then((res) => setCategories(res.data.categories)); //despues de recibir la res se accede a los datos
-  }, [reloadComponent]);
-
-  useEffect(() => {
-    if (reloadComponent) {
-      setReloadComponent(false); //false para que no se ejecute en loop
+      // Optional: Reload the categories after successful manga creation
+      await fetchCategories();
+    } catch (error) {
+      // if (error.response.data.message === "Manga already exists") {
+      //   return Swal.fire({
+      //     icon: "error",
+      //     title: "Oops...",
+      //     text: "Manga already exists!",
+      //   });
+      // }
+      // // setError(error.response.data.message || "Something went wrong!");
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: "Something went wrong!",
+      // });
     }
-  }, [reloadComponent]);
-  // console.log(categories, "categories");
-  // if (!(userRole === "1" || userRole === "2")) {
-  //   console.log(userRole === "1");
-  //   console.log("asdasdasd ");
-  //   return <Navigate to={"/"} />;
+  }
+
+  async function fetchCategories() {
+    try {
+      const res = await axios.get("http://localhost:8080/api/categories");
+      setCategories(res.data.categories);
+    } catch (error) {
+      // Handle error if needed
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  // function checkUserRole() {
+  //   const userRole = localStorage.getItem("userRole");
+  //   if (!(userRole === "1" || userRole === "2")) {
+  //     return <Navigate to={"/"} />;
+  //   }
   // }
+
   return (
     <>
       <div className="flex w-full h-[100vh] items-center justify-center">
         <div className="w-full md:w-[50%] h-[640px] shrink-0 flex flex-col justify-center items-center bg-white">
-          <p className="text-[#1F1F1F] text-center text-[32px] not-italic font-semibold leading-[normal] tracking-[1.6px]">New Manga</p>
-          <form onSubmit={handleFormSubmit} method="POST" className="w-full" placeholder="Select category">
+          <form onSubmit={(e) => handleFormSubmit(e)} method="post" encType="multipart/form-data" className="w-full">
             <div className="w-full mt-8 mr-0 mb-0 ml-0 space-y-8 flex flex-col items-center">
               <div>
+                <p className="bg-white pt-0 pr-2 pb-0 pl-2 mr-0 mb-0 ml-2 not-italic font-normal leading-[normal] tracking-[0.6px] text-xs text-[color:var(--primary-two-design,#F97316)]">Title</p>
                 <input
+                  ref={title}
                   placeholder="Insert title"
-                  id="mangaTitle"
-                  name="mangaTitle"
+                  id="title"
+                  name="title"
                   type="text"
                   required
-                  value={mangaTitle}
-                  onChange={(event) => setMangaTitle(event.target.value)}
-                  className="border placeholder-gray-400 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white rounded-[10px] border-solid border-[rgba(31,31,31,0.50)] w-[70vw] md:w-[30vw] h-12 shrink-0"
+                  className="border placeholder-gray-300 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                      rounded-[10px] border-solid border-[rgba(31,31,31,0.50)] w-[70vw] md:w-[30vw] h-12 shrink-0"
                 />
-                {error &&
-                  error.map((errorMsg, index) => {
-                    if (errorMsg.includes("Title")) {
-                      return (
-                        <span className="text-red-500 text-[13px] pl-2" key={index}>
-                          {errorMsg}
-                        </span>
-                      );
-                    }
-                    return "";
-                  })}
               </div>
               <div>
+                <p className="bg-white pt-0 pr-2 pb-0 pl-2 mr-0 mb-0 ml-2 not-italic font-normal leading-[normal] tracking-[0.6px] text-xs text-[color:var(--primary-two-design,#F97316)]">Category</p>
                 <select
-                  value={selectedOption}
-                  onChange={handleOptionChange}
+                  ref={selectedOption}
                   className="border placeholder-gray-400 pt-[12px] pr-4 pb-[11px] pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white rounded-[10px] border-solid border-[rgba(31,31,31,0.50)] w-[70vw] md:w-[30vw] h-12 shrink-0"
                 >
                   {categories &&
@@ -139,8 +129,8 @@ export default function MangaForm() {
                       </option>
                     ))}
                 </select>
-                {error &&
-                  error.map((errorMsg, index) => {
+                {error.current &&
+                  error.current.map((errorMsg, index) => {
                     if (errorMsg.includes("Category")) {
                       return (
                         <span className="text-red-500 text-[13px] pl-2" key={index}>
@@ -148,60 +138,42 @@ export default function MangaForm() {
                         </span>
                       );
                     }
-                    return "";
+                    return null;
                   })}
               </div>
               <div>
+                <p className="bg-white pt-0 pr-2 pb-0 pl-2 mr-0 mb-0 ml-2 not-italic font-normal leading-[normal] tracking-[0.6px] text-xs text-[color:var(--primary-two-design,#F97316)]">Photo</p>
                 <input
-                  placeholder="Insert cover photo"
-                  id="coverPhoto"
-                  name="coverPhoto"
-                  type="text"
+                  ref={cover_photo}
+                  placeholder="cover_photo"
+                  id="cover_photo"
+                  name="cover_photo"
+                  type="file"
                   required
-                  value={coverPhoto}
-                  onChange={(event) => setCoverPhoto(event.target.value)}
-                  className="border placeholder-gray-400 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white rounded-[10px] border-solid border-[rgba(31,31,31,0.50)] w-[70vw] md:w-[30vw] h-12 shrink-0"
+                  className="border placeholder-gray-300 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                      rounded-[10px] border-solid border-[rgba(31,31,31,0.50)] w-[70vw] md:w-[30vw] h-12 shrink-0"
                 />
-                {error &&
-                  error.map((errorMsg, index) => {
-                    if (errorMsg.includes("URL")) {
-                      return (
-                        <span className="text-red-500 text-[13px] pl-2" key={index}>
-                          {errorMsg}
-                        </span>
-                      );
-                    }
-                    return "";
-                  })}
               </div>
               <div>
+                <p className="bg-white pt-0 pr-2 pb-0 pl-2 mr-0 mb-0 ml-2 not-italic font-normal leading-[normal] tracking-[0.6px] text-xs text-[color:var(--primary-two-design,#F97316)]">
+                  Description
+                </p>
                 <input
-                  placeholder="Insert description"
-                  id="mangaDescription"
-                  name="mangaDescription"
+                  ref={description}
+                  placeholder="description"
+                  id="description"
+                  name="description"
                   type="text"
                   required
-                  value={mangaDescription}
-                  onChange={(event) => setMangaDescription(event.target.value)}
-                  className="border placeholder-gray-400 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white rounded-[10px] border-solid border-[rgba(31,31,31,0.50)] w-[70vw] md:w-[30vw] h-12 shrink-0"
+                  className="border placeholder-gray-300 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                      rounded-[10px] border-solid border-[rgba(31,31,31,0.50)] w-[70vw] md:w-[30vw] h-12 shrink-0"
                 />
-                {error &&
-                  error.map((errorMsg, index) => {
-                    if (errorMsg.includes("Description")) {
-                      return (
-                        <span className="text-red-500 text-[13px] pl-2" key={index}>
-                          {errorMsg}
-                        </span>
-                      );
-                    }
-                    return "";
-                  })}
               </div>
-
+              <div className="flex items-center justify-start w-[70vw] md:w-[30vw]"></div>
               <div className="flex w-[70vw] md:w-[30vw] h-12 flex-col justify-center shrink-0 bg-[color:var(--primary-two-design,#F97316)] rounded-[10px]">
-                <button type="submit" className="text-[#FAFCFC] text-center text-sm not-italic font-bold leading-[normal] tracking-[0.7px]">
-                  Send
-                </button>
+                <Anchor onClick={handleFormSubmit} className="text-[#FAFCFC] text-center text-sm not-italic font-bold leading-[normal] tracking-[0.7px]">
+                  Submit
+                </Anchor>
               </div>
             </div>
           </form>

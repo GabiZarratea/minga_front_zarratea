@@ -13,20 +13,20 @@ export default function MangaPage() {
   const { categoriesRead } = categories_read;
   const { manga_delete, manga_read, manga_update } = mangas_actions;
   const { mangasFilter } = actions;
-  const [reload, setReload] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [mangaId, setMangaId] = useState();
+  // const [open, setOpen] = useState(false);
+  // const [mangaId, setMangaId] = useState();
   const categories = useSelector((store) => store.categories);
   const mangas = useSelector((store) => store.mangas.mangas);
   const reduxData = useSelector((store) => store.mangasFilter);
+  const user = useSelector((store) => store);
   const category_id = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = LS.get("token");
-  const user = useSelector((store) => store);
+  const [reload, setReload] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedManga, setSelectedManga] = useState(null);
   const [reloadComponent, setReloadComponent] = useState(false);
+  const token = LS.get("token");
 
   useEffect(() => {
     axios
@@ -39,9 +39,9 @@ export default function MangaPage() {
         dispatch(setMangas(res.data.response));
         // setReloadComponent(true);
       })
-      .catch((error) => console.log(error, "esteeeeeeeeeeeeeeeerrror"));
+      .catch((error) => console.log(error));
 
-    dispatch(categoriesRead());
+    dispatch(categoriesRead()); //dispatch envia acciones a traves de redux
     dispatch(manga_read());
     dispatch(manga_update());
   }, [reloadComponent]);
@@ -58,7 +58,7 @@ export default function MangaPage() {
     navigate(`/manga/${id}`);
   }
 
-  const checkbox = (e) => {
+  const inputList = (e) => {
     const array = categories.map((category) => ({
       id: category._id,
       name: category.name,
@@ -109,7 +109,7 @@ export default function MangaPage() {
       <div>
         <div className="h-[24rem] flex flex-col justify-center items-center bg-Mymanga bg-cover bg-center object-cover lg:bg-top lg:bg-Mymanga lg:h-[29rem] xl:bg-Mymanga xl:h-[29rem] 2xl:h-[15rem] 2xl:bg-Mymanga"></div>
         <div className="h-fit flex justify-center">
-          <div className="min-h-screen rounded-[206px_206px_2px_27px/64px_64px_0px_1px;] w-full mt-[-5rem] lg:mt-[-3rem] lg:bg-white lg:rounded-2xl lg:w-11/12 xl:mt-[-3rem] mb-8 bg-slate-200 xl:bg-white xl:rounded-2xl xl:w-11/12 xl:m-[-2rem] 2xl:bg-white 2xl:rounded-2xl 2xl:w-11/12 2xl:m-[-5rem]">
+          <div className="min-h-screen rounded-[206px_206px_2px_27px/64px_64px_0px_1px;] w-full mt-[-5rem] lg:mt-[-3rem] lg:bg-white lg:rounded-2xl lg:w-11/12 xl:mt-[-3rem] mb-8 xl:bg-white xl:rounded-2xl xl:w-11/12 xl:m-[-2rem] 2xl:bg-white 2xl:rounded-2xl 2xl:w-11/12 2xl:m-[-5rem]">
             <form
               ref={category_id}
               onChange={() => {
@@ -132,7 +132,7 @@ export default function MangaPage() {
                       defaultChecked={reduxData.categoriesChecked.includes(category._id)}
                       className="hidden"
                       name="category_id"
-                      onChange={checkbox}
+                      onChange={inputList}
                       type="checkbox"
                       value={category._id}
                       id={category._id}
@@ -198,7 +198,7 @@ export default function MangaPage() {
                         </div>
 
                         <div className="flex justify-around">
-                          <button onClick={() => handleEditManga(manga)} className="my-2 w-5/12 h-8 rounded-lg text-[#8883F0] bg-[#E0DBFF]">
+                          <button onClick={() => handleEditManga(manga)} className="my-2 w-5/12 h-10 rounded-lg text-[#8883F0] bg-[#E0DBFF]">
                             Edit
                           </button>
                           <button onClick={() => alertDelete(() => dispatch(manga_delete({ id: manga?._id })))} className="w-5/12 my-2 rounded-lg text-[#EF8481] bg-[#FFE0DF]">

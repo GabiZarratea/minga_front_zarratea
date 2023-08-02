@@ -19,11 +19,12 @@ const manga_read = createAsyncThunk("manga_read", async () => {
 });
 
 const manga_delete = createAsyncThunk("manga_delete", async ({ id }) => {
+  // funcion de utilidad de redux para crear acciones async
   try {
     const token = LS.get("token");
     let headers = { headers: { Authorization: `Bearer ${token}` } };
-    let url = apiUrl + "api/mangas/" + id;
-    let res = await axios.delete(url, headers);
+    let url = apiUrl + "api/mangas/" + id; //construye una url
+    let res = await axios.delete(url, headers); //realiza solicitud DELETE- a la url
     console.log(res);
     return {
       manga_id: id,
@@ -37,7 +38,7 @@ const manga_delete = createAsyncThunk("manga_delete", async ({ id }) => {
 
 const manga_update = createAsyncThunk("manga_update", async ({ id, data }) => {
   try {
-    let token = localStorage.getItem("token");
+    const token = LS.get("token");
     let headers = { headers: { Authorization: `Bearer ${token}` } };
     let url = apiUrl + "mangas/" + id;
     let res = await axios.put(url, data, headers);

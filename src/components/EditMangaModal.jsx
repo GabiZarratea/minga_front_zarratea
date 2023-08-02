@@ -7,7 +7,7 @@ const EditMangaModal = ({ setReloadComponent, closeModal, manga }) => {
   const [selectedOption, setSelectedOption] = useState(manga.category_id.name);
   const [categories, setCategories] = useState([]);
   const [mangaTitle, setMangaTitle] = useState(manga.title);
-  const [coverPhoto, setCoverPhoto] = useState(manga.cover_photo);
+  const [cover_photo, setCoverPhoto] = useState(manga.cover_photo);
   const [mangaDescription, setMangaDescription] = useState(manga.description);
   const [error, setError] = useState([]);
 
@@ -24,7 +24,7 @@ const EditMangaModal = ({ setReloadComponent, closeModal, manga }) => {
     let selectedCategory = categories.filter((e) => e.name === selectedOption);
     const data = {
       title: mangaTitle,
-      cover_photo: coverPhoto,
+      cover_photo: cover_photo,
       description: mangaDescription,
       category_id: selectedCategory[0]._id,
     };
@@ -83,7 +83,6 @@ const EditMangaModal = ({ setReloadComponent, closeModal, manga }) => {
           <div className="w-full mt-8 mr-0 mb-0 ml-0 space-y-8 flex flex-col items-center">
             <div>
               <input
-                placeholder="Insert title"
                 id="mangaTitle"
                 name="mangaTitle"
                 type="text"
@@ -130,11 +129,10 @@ const EditMangaModal = ({ setReloadComponent, closeModal, manga }) => {
             </div>
             <div>
               <input
-                placeholder="Insert cover photo"
-                id="coverPhoto"
-                name="coverPhoto"
+                id="cover_photo"
+                name="cover_photo"
                 type="text"
-                value={coverPhoto}
+                value={cover_photo}
                 onChange={(event) => setCoverPhoto(event.target.value)}
                 className="border placeholder-gray-400 pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white rounded-[10px] border-solid border-[rgba(31,31,31,0.50)] w-[70vw] md:w-[30vw] h-12 shrink-0"
               />
@@ -152,7 +150,6 @@ const EditMangaModal = ({ setReloadComponent, closeModal, manga }) => {
             </div>
             <div>
               <input
-                placeholder="Insert description"
                 id="mangaDescription"
                 name="mangaDescription"
                 type="text"
@@ -173,14 +170,14 @@ const EditMangaModal = ({ setReloadComponent, closeModal, manga }) => {
                 })}
             </div>
 
-            <div className="flex w-[70vw] md:w-[30vw] h-12 flex-col justify-center shrink-0 bg-[color:var(--primary-two-design,#F97316)] rounded-[10px]">
-              <button type="submit" className="text-[#FAFCFC] text-center text-sm not-italic font-bold leading-[normal] tracking-[0.7px]">
-                Send
+            <div className="flex w-[70vw] md:w-[30vw] h-12 flex-col justify-center shrink-0 bg-[#34D399] rounded-[10px]">
+              <button type="submit" className="text-[#FFF] text-center text-sm not-italic font-bold leading-[normal] tracking-[0.7px]">
+                Edit
               </button>
             </div>
-            <div className="flex w-[100px] md:w-[30vw] h-12 flex-col justify-center shrink-0 bg-red-600 rounded-[10px]">
-              <button type="submit" className=" text-[#FAFCFC] text-center text-sm not-italic font-bold leading-[normal] tracking-[0.7px]" onClick={closeModal}>
-                Close
+            <div className="flex w-[100px] md:w-[30vw] h-12 flex-col justify-center shrink-0 bg-[#FBDDDC] rounded-[10px]">
+              <button type="submit" className=" text-[#EE8380] text-center text-sm not-italic font-bold leading-[normal] tracking-[0.7px]" onClick={closeModal}>
+                Cancel
               </button>
             </div>
           </div>

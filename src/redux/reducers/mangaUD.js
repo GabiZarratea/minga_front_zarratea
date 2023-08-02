@@ -18,15 +18,16 @@ const reducer = createReducer(inicialState, (builder) =>
     })
     .addCase(manga_delete.fulfilled, (state, action) => {
       let newState = {
-        ...state,
-        manga: state.manga.filter((manga) => manga._id !== action.payload.manga_id),
+        ...state, //operador de propagacion copia el estado actual
+        manga: state.manga.filter((manga) => manga._id !== action.payload.manga_id), //actualiza el array excluyendo el manga borrado
       };
       return newState;
     })
     .addCase(manga_update.fulfilled, (state, action) => {
       let mangas = state.manga.map((manga) => {
+        //crea un array nuevo con la fn map, itera sobre los mangas
         if (manga._id === action.payload.manga._id) {
-          return action.payload.manga;
+          return action.payload.manga; //devuelve el manga actualizado
         } else {
           return manga;
         }
